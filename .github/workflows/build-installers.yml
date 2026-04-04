@@ -25,7 +25,7 @@ jobs:
         run: npm ci
 
       - name: Build macOS installer
-        run: npm run package:mac
+        run: npm run package:mac -- --publish never
 
       - name: Upload macOS installer
         uses: actions/upload-artifact@v4
@@ -52,7 +52,7 @@ jobs:
         run: npm ci
 
       - name: Build Windows installer
-        run: npm run package:win
+        run: npm run package:win -- --publish never
 
       - name: Upload Windows installer
         uses: actions/upload-artifact@v4
