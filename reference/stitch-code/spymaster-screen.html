@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-low": "#fff1e4",
+              "on-tertiary": "#ffffff",
+              "on-error-container": "#93000a",
+              "surface-container-lowest": "#ffffff",
+              "on-tertiary-fixed": "#231820",
+              "on-secondary-fixed-variant": "#00419c",
+              "inverse-on-surface": "#fdeedf",
+              "on-surface": "#211a11",
+              "outline": "#7e766d",
+              "on-primary-container": "#af2f32",
+              "error": "#ba1a1a",
+              "secondary-fixed-dim": "#b0c6ff",
+              "secondary-fixed": "#d9e2ff",
+              "surface-tint": "#ae2f31",
+              "tertiary-fixed-dim": "#d5c1cc",
+              "primary": "#ae2f31",
+              "surface-bright": "#fff8f4",
+              "error-container": "#ffdad6",
+              "on-primary": "#ffffff",
+              "inverse-surface": "#372f25",
+              "on-background": "#211a11",
+              "surface-variant": "#eee0d1",
+              "on-error": "#ffffff",
+              "surface-dim": "#e6d8c9",
+              "primary-fixed": "#ffdad7",
+              "tertiary": "#695a63",
+              "secondary": "#1c59c1",
+              "on-primary-fixed": "#410005",
+              "on-tertiary-container": "#6a5b64",
+              "outline-variant": "#cfc5bb",
+              "surface": "#fff8f4",
+              "surface-container": "#faecdc",
+              "on-tertiary-fixed-variant": "#51434c",
+              "tertiary-fixed": "#f2dde8",
+              "on-primary-fixed-variant": "#8d141c",
+              "on-secondary-container": "#002b6b",
+              "background": "#fff8f4",
+              "tertiary-container": "#e9d5e0",
+              "on-secondary-fixed": "#001945",
+              "surface-container-highest": "#eee0d1",
+              "secondary-container": "#6192fe",
+              "on-secondary": "#ffffff",
+              "inverse-primary": "#ffb3ae",
+              "surface-container-high": "#f4e6d7",
+              "primary-fixed-dim": "#ffb3ae",
+              "on-surface-variant": "#4c463e",
+              "primary-container": "#ffcfcb"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #e6d8c9; /* surface-dim */
+        }
+        .glass-panel {
+            background: rgba(250, 236, 220, 0.8);
+            backdrop-filter: blur(20px);
+        }
+        .tile-shadow {
+            box-shadow: 0px 12px 32px rgba(33, 26, 17, 0.06);
+        }
+    </style>
+</head>
+<body class="text-on-surface">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-6 py-3 h-16 bg-[#e6d8c9] dark:bg-stone-900 fixed top-0 z-50 docked full-width">
+<div class="flex items-center gap-8">
+<span class="text-xl font-black text-[#211a11] dark:text-stone-100 font-manrope tracking-tight">Lexicon Board</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-[#211a11]/60 dark:text-stone-400 hover:text-[#211a11] transition-colors duration-200 font-manrope font-bold" href="#">Lobby</a>
+<a class="text-[#211a11]/60 dark:text-stone-400 hover:text-[#211a11] transition-colors duration-200 font-manrope font-bold" href="#">Leaderboard</a>
+<a class="text-[#211a11]/60 dark:text-stone-400 hover:text-[#211a11] transition-colors duration-200 font-manrope font-bold" href="#">Word Packs</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-[#211a11]/60 hover:bg-[#faecdc]/50 p-2 rounded-full transition-all">settings</button>
+<button class="material-symbols-outlined text-[#211a11]/60 hover:bg-[#faecdc]/50 p-2 rounded-full transition-all">help</button>
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container-highest">
+<img alt="Professor Avatar" data-alt="Stylized academic professor avatar icon with a graduation cap on a warm neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATLCGOfof3HUftRqLikaVmEy93pN90H0C0THD5da07ws7VBH_Y-AABF1Mli6IPcl4eNXpqpZM52WzqxdMd9pKS3OvHmzw2P42bb0EtgXUDgRGL0D3J_8brrjwZqPHqH0ueAmGcVaAUdTe5kzyo91N_4iMqkDisBjuH3cuSBzM6nlidf8VzBvUdj9IhZIu410KV-0zcfHYlQvtxOsBiYWTX0lLApyMVN_RMkfZK25mZUaWEAjBTSD0cnF5O61Pz4TiOwojagkoR328"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="pt-16 min-h-screen p-8">
+<div class="max-w-7xl mx-auto grid grid-cols-1 xl:grid-cols-12 gap-10">
+<!-- Game Board (Spymaster View) -->
+<div class="xl:col-span-8 flex flex-col">
+<!-- Header Info -->
+<div class="flex items-center justify-between mb-8">
+<div>
+<h1 class="text-4xl font-headline font-extrabold text-on-surface tracking-tight uppercase">SPYMASTER VIEW</h1>
+<p class="text-on-surface-variant font-body">Give a clue to your team. They have found <span class="font-bold text-primary">2</span> of your <span class="font-bold text-primary">9</span> agents.</p>
+</div>
+<div class="flex items-center gap-4 bg-surface-container p-4 rounded-xl shadow-sm">
+<div class="text-center px-4 border-r border-outline-variant/30">
+<p class="text-[10px] uppercase tracking-widest font-bold text-primary opacity-70">Red Team</p>
+<p class="text-2xl font-headline font-black">07</p>
+</div>
+<div class="text-center px-4">
+<p class="text-[10px] uppercase tracking-widest font-bold text-secondary opacity-70">Blue Team</p>
+<p class="text-2xl font-headline font-black">05</p>
+</div>
+</div>
+</div>
+<!-- The 5x5 Grid (Answer Key) -->
+<div class="grid grid-cols-5 gap-4 rounded-xl">
+<!-- Row 1 -->
+<!-- Red #C94242 -->
+<div class="aspect-square bg-[#C94242] text-white rounded-xl flex flex-col items-center justify-center p-4 shadow-lg group relative border-2 border-white/20">
+<span class="text-xl font-headline font-bold uppercase tracking-wide text-center">Everest</span>
+</div>
+<!-- Neutral #D8C4CF -->
+<div class="aspect-square bg-[#D8C4CF] text-[#211a11] rounded-xl flex flex-col items-center justify-center p-4 shadow-lg group relative">
+<span class="text-xl font-headline font-bold uppercase tracking-wide text-center">Pillow</span>
+</div>
+<!-- Blue #3A6FD8 -->
+<div class="aspect-square bg-[#3A6FD8] text-white rounded-xl flex flex-col items-center justify-center p-4 shadow-lg group relative">
+<span class="text-xl font-headline font-bold uppercase tracking-wide text-center">Space</span>
+</div>
+<!-- Neutral #D8C4CF -->
+<div class="aspect-square bg-[#D8C4CF] text-[#211a11] rounded-xl flex flex-col items-center justify-center p-4 shadow-lg group relative">
+<span class="text-xl font-headline font-bold uppercase tracking-wide text-center">Berlin</span>
+</div>
+<!-- Red #C94242 -->
+<div class="aspect-square bg-[#C94242] text-white rounded-xl flex flex-col items-center justify-center p-4 shadow-lg group relative">
+<span class="text-xl font-headline font-bold uppercase tracking-wide text-center">Eagle</span>
+</div>
+<!-- Row 2 -->
+<!-- Blue #3A6FD8 -->
+<div class="aspect-square bg-[#3A6FD8] text-white rounded-xl flex flex-col items-center justify-center p-4 shadow-lg group relative">
+<span class="text-xl font-headline font-bold uppercase tracking-wide text-center">Ship</span>
+</div>
+<!-- Blue #3A6FD8 -->
+<div class="aspect-square bg-[#3A6FD8] text-white rounded-xl flex flex-col items-center justify-center p-4 shadow-lg group relative">
+<span class="text-xl font-headline font-bold uppercase tracking-wide text-center">Laser</span>
+</div>
+<!-- Neutral #D8C4CF -->
+<div class="aspect-square bg-[#D8C4CF] text-[#211a11] rounded-xl flex flex-col items-center justify-center p-4 shadow-lg group relative">
+<span class="text-xl font-headline font-bold uppercase tracking-wide text-center">Mercury</span>
+</div>
+<!-- Red #C94242 -->
+<div class="aspect-square bg-[#C94242] text-white rounded-xl flex flex-col items-center justify-center p-4 shadow-lg group relative">
+<span class="text-xl font-headline font-bold uppercase tracking-wide text-center">Bridge</span>
+</div>
+<!-- Blue #3A6FD8 -->
+<div class="aspect-square bg-[#3A6FD8] text-white rounded-xl flex flex-col items-center justify-center p-4 shadow-lg group relative">
+<span class="text-xl font-headline font-bold uppercase tracking-wide text-center">Scale</span>
+</div>
+<!-- Row 3 -->
+<!-- Red #C94242 -->
+<div class="aspect-square bg-[#C94242] text-white rounded-xl flex flex-col items-center justify-center p-4 shadow-lg group relative">
+<span class="text-xl font-headline font-bold uppercase tracking-wide text-center">Cliff</span>
+</div>
+<!-- Neutral #D8C4CF -->
+<div class="aspect-square bg-[#D8C4CF] text-[#211a11] rounded-xl flex flex-col items-center justify-center p-4 shadow-lg group relative">
+<span class="text-xl font-headline font-bold uppercase tracking-wide text-center">Jupiter</span>
+</div>
+<!-- Red #C94242 -->
+<div class="aspect-square bg-[#C94242] text-white rounded-xl flex flex-col items-center justify-center p-4 shadow-lg group relative">
+<span class="text-xl font-headline font-bold uppercase tracking-wide text-center">Honey</span>
+</div>
+<!-- Blue #3A6FD8 -->
+<div class="aspect-square bg-[#3A6FD8] text-white rounded-xl flex flex-col items-center justify-center p-4 shadow-lg group relative">
+<span class="text-xl font-headline font-bold uppercase tracking-wide text-center">Watch</span>
+</div>
+<!-- Neutral #D8C4CF -->
+<div class="aspect-square bg-[#D8C4CF] text-[#211a11] rounded-xl flex flex-col items-center justify-center p-4 shadow-lg group relative">
+<span class="text-xl font-headline font-bold uppercase tracking-wide text-center">Paper</span>
+</div>
+<!-- Row 4 -->
+<!-- Red #C94242 -->
+<div class="aspect-square bg-[#C94242] text-white rounded-xl flex flex-col items-center justify-center p-4 shadow-lg group relative">
+<span class="text-xl font-headline font-bold uppercase tracking-wide text-center">Apple</span>
+</div>
+<!-- Blue #3A6FD8 -->
+<div class="aspect-square bg-[#3A6FD8] text-white rounded-xl flex flex-col items-center justify-center p-4 shadow-lg group relative">
+<span class="text-xl font-headline font-bold uppercase tracking-wide text-center">Doctor</span>
+</div>
+<!-- Assassin #2F2F2F -->
+<div class="aspect-square bg-[#2F2F2F] text-white rounded-xl flex flex-col items-center justify-center p-4 shadow-lg group relative">
+<span class="text-xl font-headline font-bold uppercase tracking-wide text-center">Bomb</span>
+<span class="material-symbols-outlined text-white/40 absolute top-2 right-2 text-sm">skull</span>
+</div>
+<!-- Red #C94242 -->
+<div class="aspect-square bg-[#C94242] text-white rounded-xl flex flex-col items-center justify-center p-4 shadow-lg group relative">
+<span class="text-xl font-headline font-bold uppercase tracking-wide text-center">Crane</span>
+</div>
+<!-- Blue #3A6FD8 -->
+<div class="aspect-square bg-[#3A6FD8] text-white rounded-xl flex flex-col items-center justify-center p-4 shadow-lg group relative">
+<span class="text-xl font-headline font-bold uppercase tracking-wide text-center">Tokyo</span>
+</div>
+<!-- Row 5 -->
+<!-- Neutral #D8C4CF -->
+<div class="aspect-square bg-[#D8C4CF] text-[#211a11] rounded-xl flex flex-col items-center justify-center p-4 shadow-lg group relative">
+<span class="text-xl font-headline font-bold uppercase tracking-wide text-center">Sub</span>
+</div>
+<!-- Red #C94242 -->
+<div class="aspect-square bg-[#C94242] text-white rounded-xl flex flex-col items-center justify-center p-4 shadow-lg group relative">
+<span class="text-xl font-headline font-bold uppercase tracking-wide text-center">Castle</span>
+</div>
+<!-- Blue #3A6FD8 -->
+<div class="aspect-square bg-[#3A6FD8] text-white rounded-xl flex flex-col items-center justify-center p-4 shadow-lg group relative">
+<span class="text-xl font-headline font-bold uppercase tracking-wide text-center">Diamond</span>
+</div>
+<!-- Red #C94242 -->
+<div class="aspect-square bg-[#C94242] text-white rounded-xl flex flex-col items-center justify-center p-4 shadow-lg group relative">
+<span class="text-xl font-headline font-bold uppercase tracking-wide text-center">Iron</span>
+</div>
+<!-- Neutral #D8C4CF -->
+<div class="aspect-square bg-[#D8C4CF] text-[#211a11] rounded-xl flex flex-col items-center justify-center p-4 shadow-lg group relative">
+<span class="text-xl font-headline font-bold uppercase tracking-wide text-center">Forest</span>
+</div>
+</div>
+<!-- Clue Input Section -->
+<div class="flex items-center justify-center gap-4 mt-10">
+<div class="flex items-center bg-surface-container-high rounded-full px-4 py-2 border border-outline-variant/30">
+<input class="bg-transparent border-none focus:ring-0 font-headline font-bold text-lg uppercase w-48 placeholder:text-on-surface/30" placeholder="Clue Word" type="text"/>
+<div class="h-8 w-px bg-outline-variant/30 mx-2"></div>
+<select class="bg-transparent border-none focus:ring-0 font-headline font-bold text-lg cursor-pointer">
+<option>1</option>
+<option>2</option>
+<option>3</option>
+<option>4</option>
+<option>5</option>
+<option>6</option>
+<option>7</option>
+<option>8</option>
+<option>9</option>
+</select>
+</div>
+<button class="px-10 py-4 bg-primary text-on-primary rounded-full font-headline font-black text-lg tracking-wider hover:opacity-90 transition-all shadow-xl active:scale-95">GIVE CLUE</button>
+<button class="px-8 py-4 bg-surface-container-high text-on-surface rounded-full font-headline font-bold hover:bg-surface-variant transition-all">PASS TURN</button>
+</div>
+</div>
+<!-- Team Discussion Panel -->
+<div class="xl:col-span-4 flex flex-col h-[750px] bg-surface-container-low rounded-3xl overflow-hidden shadow-2xl relative">
+<div class="p-6 bg-surface-container border-b border-outline-variant/20 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">forum</span>
+<h2 class="font-headline font-bold text-on-surface">TEAM CHAT</h2>
+</div>
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-surface-container-low bg-surface-container-highest flex items-center justify-center overflow-hidden">
+<img alt="User" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_wK5npqZoYQhFUTQtAfHjY-t60PSA7FKEuHZGGUpIigUaFNGjn6axNyobfhuNjXnIov5v9wIro-ZmP3XdzHHSTo5S7kWgvB0FRHJOIlAXtYYKR-UjqhihMwOafQ9EMFzwY9qKhWGNokTfWgKHgxdRkDVx24K4QEml8wlAu3g8MjhsC0H5HE6ztX9CR0E8tISrEwC9EZt0pMjTcjNPhsrTaSlMaJ18o5NhcKfUXWO5g2Fl4R7zZ2OLty5K9G5_tDpW5nAtqieRQeE"/>
+</div>
+<div class="w-8 h-8 rounded-full border-2 border-surface-container-low bg-surface-container-highest flex items-center justify-center overflow-hidden">
+<img alt="User" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvlfyQvxI5LoH042U0dkKuscjpeehheJDpPQApaHeA0CJcCtTIxhBJF3sC0Y47LOmTnUnUs7Td6QdrKf0lUTFVC4ipAm2duqRJgRRcpgMem6Z5NselR-ZJMIXNvc_R6TYxHy5oKjHLVAuokurg7MOPPKlp00cO2kyAuI9__Tp209_l7D1PSrzbUXOdv4ma_NZoluvum8mKUzcJCzRPAFhnWBMJm1F8_QveSAX2qnaHIoXNKE57IRUT9WCsZsGGQsQvEyzTDApP468"/>
+</div>
+<div class="w-8 h-8 rounded-full border-2 border-surface-container-low bg-primary text-on-primary text-[10px] font-bold flex items-center justify-center">+4</div>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto p-6 space-y-4">
+<div class="flex flex-col gap-1 max-w-[85%]">
+<span class="text-[10px] font-bold text-on-surface-variant ml-2">SARAH</span>
+<div class="bg-surface-container-lowest p-4 rounded-2xl rounded-tl-none shadow-sm">
+<p class="text-sm font-body">Everest has to be one of them. It's a mountain.</p>
+</div>
+</div>
+<div class="flex flex-col gap-1 max-w-[85%] self-end">
+<span class="text-[10px] font-bold text-primary mr-2 text-right">YOU</span>
+<div class="bg-primary-container p-4 rounded-2xl rounded-tr-none shadow-sm border border-primary/10">
+<p class="text-sm font-body text-on-primary-container">What about Eagle? They nest in mountains sometimes?</p>
+</div>
+</div>
+<div class="flex flex-col gap-1 max-w-[85%]">
+<span class="text-[10px] font-bold text-on-surface-variant ml-2">JAMES</span>
+<div class="bg-surface-container-lowest p-4 rounded-2xl rounded-tl-none shadow-sm">
+<p class="text-sm font-body">I'm voting for Everest first. 🏔️</p>
+</div>
+</div>
+<div class="text-center py-2">
+<span class="text-[10px] font-bold text-primary opacity-60 uppercase tracking-widest italic">— Waiting for your clue —</span>
+</div>
+</div>
+<div class="p-6 bg-surface-container-low">
+<div class="relative flex items-center">
+<input class="w-full bg-surface-container-lowest border-none border-b-2 border-outline-variant/30 focus:border-primary focus:ring-0 rounded-xl py-4 pl-4 pr-12 transition-all font-body text-sm" placeholder="Message your team..." type="text"/>
+<button class="absolute right-3 w-8 h-8 bg-primary text-on-primary rounded-lg flex items-center justify-center hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-sm">send</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

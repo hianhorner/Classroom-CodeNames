@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lexicon Tabletop - Code Names</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "secondary-fixed": "#d9e2ff",
+                "inverse-on-surface": "#fdeedf",
+                "surface-container-lowest": "#ffffff",
+                "primary-fixed-dim": "#ffb3ae",
+                "surface-dim": "#e6d8c9",
+                "inverse-primary": "#ffb3ae",
+                "secondary-fixed-dim": "#b0c6ff",
+                "on-tertiary-container": "#6a5b64",
+                "surface-bright": "#fff8f4",
+                "secondary-container": "#6192fe",
+                "on-error": "#ffffff",
+                "on-surface": "#211a11",
+                "on-tertiary": "#ffffff",
+                "surface": "#fff8f4",
+                "tertiary-fixed": "#f2dde8",
+                "error": "#ba1a1a",
+                "surface-container-highest": "#eee0d1",
+                "on-tertiary-fixed-variant": "#51434c",
+                "primary": "#ae2f31",
+                "on-primary-container": "#af2f32",
+                "primary-container": "#ffcfcb",
+                "on-secondary-container": "#002b6b",
+                "tertiary": "#695a63",
+                "on-error-container": "#93000a",
+                "surface-container-high": "#f4e6d7",
+                "inverse-surface": "#372f25",
+                "primary-fixed": "#ffdad7",
+                "secondary": "#1c59c1",
+                "background": "#fff8f4",
+                "on-secondary-fixed-variant": "#00419c",
+                "on-primary-fixed": "#410005",
+                "surface-tint": "#ae2f31",
+                "tertiary-fixed-dim": "#d5c1cc",
+                "on-secondary": "#ffffff",
+                "surface-container-low": "#fff1e4",
+                "on-surface-variant": "#4c463e",
+                "on-secondary-fixed": "#001945",
+                "on-primary-fixed-variant": "#8d141c",
+                "on-primary": "#ffffff",
+                "outline": "#7e766d",
+                "on-background": "#211a11",
+                "surface-container": "#faecdc",
+                "outline-variant": "#cfc5bb",
+                "tertiary-container": "#e9d5e0",
+                "surface-variant": "#eee0d1",
+                "on-tertiary-fixed": "#231820",
+                "error-container": "#ffdad6"
+              },
+              fontFamily: {
+                "headline": ["Manrope"],
+                "body": ["Inter"],
+                "label": ["Inter"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style>
+        body {
+            background-color: #E3E3E3;
+            color: #211a11;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .game-tile-shadow {
+            box-shadow: 0px 4px 8px rgba(33, 26, 17, 0.08);
+        }
+        .main-card-shadow {
+            box-shadow: 0px 12px 32px rgba(0, 0, 0, 0.08);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+<!-- TopAppBar -->
+<header class="bg-[#e6d8c9] dark:bg-stone-900 flex justify-between items-center w-full px-8 py-4 max-w-full sticky top-0 z-50">
+<div class="text-2xl font-black text-[#211a11] dark:text-stone-100 font-['Manrope'] tracking-tight">
+            Lexicon Tabletop
+        </div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="text-[#211a11]/60 dark:text-stone-400 font-['Manrope'] font-bold tracking-tight hover:text-[#ae2f31] transition-colors duration-200" href="#">How to Play</a>
+<a class="text-[#211a11]/60 dark:text-stone-400 font-['Manrope'] font-bold tracking-tight hover:text-[#ae2f31] transition-colors duration-200" href="#">Statistics</a>
+<a class="text-[#ae2f31] border-b-2 border-[#ae2f31] pb-1 font-['Manrope'] font-bold tracking-tight" href="#">New Game</a>
+</nav>
+<div class="flex items-center gap-4">
+<div class="flex gap-2">
+<button class="material-symbols-outlined text-[#211a11]/60 dark:text-stone-400 hover:text-[#ae2f31] transition-colors" data-icon="settings">settings</button>
+<button class="material-symbols-outlined text-[#211a11]/60 dark:text-stone-400 hover:text-[#ae2f31] transition-colors" data-icon="help">help</button>
+</div>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-bold active:scale-95 duration-200">End Turn</button>
+</div>
+</header>
+<main class="flex flex-col md:flex-row min-h-[calc(100vh-72px)] w-full">
+<!-- Left Side: Content -->
+<div class="w-full md:w-1/2 flex flex-col justify-center px-12 md:px-24 py-16">
+<h1 class="font-headline font-extrabold text-7xl md:text-8xl text-on-background tracking-tighter mb-12">
+                Code Names
+            </h1>
+<div class="max-w-md">
+<h2 class="font-headline font-bold text-2xl text-primary mb-6 uppercase tracking-widest">How to Play</h2>
+<ul class="space-y-6">
+<li class="flex items-start gap-4">
+<span class="flex-shrink-0 w-8 h-8 rounded-full bg-stone-300 dark:bg-stone-700 flex items-center justify-center font-bold text-sm">1</span>
+<p class="text-on-surface/80 leading-relaxed font-medium">Two teams compete to identify their hidden words.</p>
+</li>
+<li class="flex items-start gap-4">
+<span class="flex-shrink-0 w-8 h-8 rounded-full bg-stone-300 dark:bg-stone-700 flex items-center justify-center font-bold text-sm">2</span>
+<p class="text-on-surface/80 leading-relaxed font-medium">One player gives a one-word clue that connects multiple words on the board.</p>
+</li>
+<li class="flex items-start gap-4">
+<span class="flex-shrink-0 w-8 h-8 rounded-full bg-stone-300 dark:bg-stone-700 flex items-center justify-center font-bold text-sm">3</span>
+<p class="text-on-surface/80 leading-relaxed font-medium">Teammates try to guess the correct words based on the clue.</p>
+</li>
+<li class="flex items-start gap-4">
+<span class="flex-shrink-0 w-8 h-8 rounded-full bg-stone-300 dark:bg-stone-700 flex items-center justify-center font-bold text-sm">4</span>
+<p class="text-on-surface/80 leading-relaxed font-medium">Avoid selecting the assassin tile.</p>
+</li>
+<li class="flex items-start gap-4">
+<span class="flex-shrink-0 w-8 h-8 rounded-full bg-stone-300 dark:bg-stone-700 flex items-center justify-center font-bold text-sm">5</span>
+<p class="text-on-surface/80 leading-relaxed font-medium">The first team to identify all their words wins.</p>
+</li>
+</ul>
+<div class="mt-12 flex gap-4">
+<button class="bg-primary text-on-primary px-10 py-4 rounded-full font-headline font-extrabold text-lg shadow-lg hover:shadow-primary/20 transition-all active:scale-95">
+                        Start Session
+                    </button>
+<button class="bg-stone-200 text-on-surface px-8 py-4 rounded-full font-headline font-bold text-lg hover:bg-stone-300 transition-all">
+                        Join Table
+                    </button>
+</div>
+</div>
+</div>
+<!-- Right Side: Game Board Visual -->
+<div class="w-full md:w-1/2 flex items-center justify-center p-8 md:p-16">
+<div class="bg-surface-dim p-8 md:p-12 rounded-[2rem] main-card-shadow w-full max-w-2xl aspect-square flex flex-col items-center justify-center">
+<div class="grid grid-cols-5 gap-3 md:gap-4 w-full h-full">
+<!-- Row 1 -->
+<div class="bg-surface-container-lowest rounded-lg game-tile-shadow flex items-center justify-center p-2 text-center aspect-square">
+<span class="font-bold text-[10px] md:text-sm uppercase tracking-wider text-on-surface">TRADE</span>
+</div>
+<div class="bg-primary rounded-lg game-tile-shadow flex items-center justify-center p-2 text-center aspect-square">
+<span class="font-bold text-[10px] md:text-sm uppercase tracking-wider text-on-primary">MARKET</span>
+</div>
+<div class="bg-surface-container-lowest rounded-lg game-tile-shadow flex items-center justify-center p-2 text-center aspect-square">
+<span class="font-bold text-[10px] md:text-sm uppercase tracking-wider text-on-surface">SUPPLY</span>
+</div>
+<div class="bg-secondary rounded-lg game-tile-shadow flex items-center justify-center p-2 text-center aspect-square">
+<span class="font-bold text-[10px] md:text-sm uppercase tracking-wider text-on-secondary">DEMAND</span>
+</div>
+<div class="bg-surface-container-lowest rounded-lg game-tile-shadow flex items-center justify-center p-2 text-center aspect-square">
+<span class="font-bold text-[10px] md:text-sm uppercase tracking-wider text-on-surface">LABOR</span>
+</div>
+<!-- Row 2 -->
+<div class="bg-surface-container-lowest rounded-lg game-tile-shadow flex items-center justify-center p-2 text-center aspect-square">
+<span class="font-bold text-[10px] md:text-sm uppercase tracking-wider text-on-surface">STOCK</span>
+</div>
+<div class="bg-surface-container-lowest rounded-lg game-tile-shadow flex items-center justify-center p-2 text-center aspect-square">
+<span class="font-bold text-[10px] md:text-sm uppercase tracking-wider text-on-surface">BOND</span>
+</div>
+<div class="bg-secondary rounded-lg game-tile-shadow flex items-center justify-center p-2 text-center aspect-square">
+<span class="font-bold text-[10px] md:text-sm uppercase tracking-wider text-on-secondary">ASSET</span>
+</div>
+<div class="bg-surface-container-lowest rounded-lg game-tile-shadow flex items-center justify-center p-2 text-center aspect-square">
+<span class="font-bold text-[10px] md:text-sm uppercase tracking-wider text-on-surface">LOAN</span>
+</div>
+<div class="bg-primary rounded-lg game-tile-shadow flex items-center justify-center p-2 text-center aspect-square">
+<span class="font-bold text-[10px] md:text-sm uppercase tracking-wider text-on-primary">PROFIT</span>
+</div>
+<!-- Row 3 -->
+<div class="bg-primary rounded-lg game-tile-shadow flex items-center justify-center p-2 text-center aspect-square">
+<span class="font-bold text-[10px] md:text-sm uppercase tracking-wider text-on-primary">GROWTH</span>
+</div>
+<div class="bg-surface-container-lowest rounded-lg game-tile-shadow flex items-center justify-center p-2 text-center aspect-square">
+<span class="font-bold text-[10px] md:text-sm uppercase tracking-wider text-on-surface">VALUE</span>
+</div>
+<div class="bg-inverse-surface rounded-lg game-tile-shadow flex items-center justify-center p-2 text-center aspect-square ring-2 ring-error">
+<span class="font-bold text-[10px] md:text-sm uppercase tracking-wider text-white">RISK</span>
+</div>
+<div class="bg-surface-container-lowest rounded-lg game-tile-shadow flex items-center justify-center p-2 text-center aspect-square">
+<span class="font-bold text-[10px] md:text-sm uppercase tracking-wider text-on-surface">CREDIT</span>
+</div>
+<div class="bg-surface-container-lowest rounded-lg game-tile-shadow flex items-center justify-center p-2 text-center aspect-square">
+<span class="font-bold text-[10px] md:text-sm uppercase tracking-wider text-on-surface">INDEX</span>
+</div>
+<!-- Row 4 -->
+<div class="bg-surface-container-lowest rounded-lg game-tile-shadow flex items-center justify-center p-2 text-center aspect-square">
+<span class="font-bold text-[10px] md:text-sm uppercase tracking-wider text-on-surface">TAX</span>
+</div>
+<div class="bg-secondary rounded-lg game-tile-shadow flex items-center justify-center p-2 text-center aspect-square">
+<span class="font-bold text-[10px] md:text-sm uppercase tracking-wider text-on-secondary">BANK</span>
+</div>
+<div class="bg-surface-container-lowest rounded-lg game-tile-shadow flex items-center justify-center p-2 text-center aspect-square">
+<span class="font-bold text-[10px] md:text-sm uppercase tracking-wider text-on-surface">CASH</span>
+</div>
+<div class="bg-primary rounded-lg game-tile-shadow flex items-center justify-center p-2 text-center aspect-square">
+<span class="font-bold text-[10px] md:text-sm uppercase tracking-wider text-on-primary">TRADE</span>
+</div>
+<div class="bg-surface-container-lowest rounded-lg game-tile-shadow flex items-center justify-center p-2 text-center aspect-square">
+<span class="font-bold text-[10px] md:text-sm uppercase tracking-wider text-on-surface">GOLD</span>
+</div>
+<!-- Row 5 -->
+<div class="bg-secondary rounded-lg game-tile-shadow flex items-center justify-center p-2 text-center aspect-square">
+<span class="font-bold text-[10px] md:text-sm uppercase tracking-wider text-on-secondary">DEBT</span>
+</div>
+<div class="bg-surface-container-lowest rounded-lg game-tile-shadow flex items-center justify-center p-2 text-center aspect-square">
+<span class="font-bold text-[10px] md:text-sm uppercase tracking-wider text-on-surface">SAVE</span>
+</div>
+<div class="bg-surface-container-lowest rounded-lg game-tile-shadow flex items-center justify-center p-2 text-center aspect-square">
+<span class="font-bold text-[10px] md:text-sm uppercase tracking-wider text-on-surface">PLAN</span>
+</div>
+<div class="bg-surface-container-lowest rounded-lg game-tile-shadow flex items-center justify-center p-2 text-center aspect-square">
+<span class="font-bold text-[10px] md:text-sm uppercase tracking-wider text-on-surface">FUND</span>
+</div>
+<div class="bg-primary rounded-lg game-tile-shadow flex items-center justify-center p-2 text-center aspect-square">
+<span class="font-bold text-[10px] md:text-sm uppercase tracking-wider text-on-primary">COST</span>
+</div>
+</div>
+<div class="mt-8 flex justify-between w-full items-center">
+<div class="flex items-center gap-3">
+<div class="w-12 h-6 bg-primary rounded-full"></div>
+<span class="font-bold text-sm text-on-surface">8 REMAINING</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-bold text-sm text-on-surface text-right">9 REMAINING</span>
+<div class="w-12 h-6 bg-secondary rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

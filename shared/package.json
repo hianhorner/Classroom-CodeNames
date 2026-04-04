@@ -1,0 +1,13 @@
+{
+  "name": "@classroom-codenames/shared",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --out-dir dist --clean",
+    "typecheck": "tsc --noEmit --project tsconfig.json"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}

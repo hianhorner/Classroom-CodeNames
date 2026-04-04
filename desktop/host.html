@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Classroom CodeNames</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --paper: rgba(250, 243, 232, 0.92);
+        --paper-strong: rgba(255, 248, 239, 0.98);
+        --ink: #241d16;
+        --muted: rgba(36, 29, 22, 0.68);
+        --line: rgba(92, 73, 50, 0.16);
+        --green: #78985a;
+        --green-strong: #67844d;
+        --green-soft: rgba(120, 152, 90, 0.18);
+        --red: #c15757;
+        --red-soft: rgba(193, 87, 87, 0.14);
+        --shadow: 0 22px 48px rgba(35, 24, 10, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Avenir Next", "Segoe UI", sans-serif;
+        color: var(--ink);
+        background:
+          linear-gradient(180deg, rgba(220, 212, 201, 0.92), rgba(207, 199, 189, 0.98)),
+          linear-gradient(rgba(255, 255, 255, 0.24) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.24) 1px, transparent 1px);
+        background-size: auto, 22px 22px, 22px 22px;
+        background-position: center;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background:
+          radial-gradient(circle at top left, rgba(188, 62, 55, 0.12), transparent 36%),
+          radial-gradient(circle at right bottom, rgba(58, 104, 198, 0.12), transparent 34%);
+      }
+
+      main {
+        position: relative;
+        width: min(100%, 980px);
+        margin: 0 auto;
+        padding: 32px 24px 28px;
+      }
+
+      .shell {
+        display: grid;
+        gap: 18px;
+      }
+
+      .hero,
+      .panel {
+        background: linear-gradient(135deg, var(--paper-strong), var(--paper));
+        border: 1px solid rgba(255, 255, 255, 0.55);
+        border-radius: 28px;
+        box-shadow: var(--shadow);
+      }
+
+      .hero {
+        padding: 24px;
+      }
+
+      .eyebrow {
+        margin: 0 0 10px;
+        color: #b33931;
+        font-size: 0.82rem;
+        font-weight: 800;
+        letter-spacing: 0.26em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(2.1rem, 5vw, 3.25rem);
+        line-height: 0.96;
+      }
+
+      .lede {
+        margin: 14px 0 0;
+        max-width: 38rem;
+        color: var(--muted);
+        font-size: 1rem;
+        line-height: 1.5;
+      }
+
+      .status-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 40px;
+        padding: 0 16px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.72);
+        color: var(--ink);
+        font-size: 0.82rem;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      body[data-phase="ready"] .status-pill {
+        background: var(--green-soft);
+        color: var(--green-strong);
+      }
+
+      body[data-phase="error"] .status-pill {
+        background: var(--red-soft);
+        color: #9a3c3c;
+      }
+
+      .status-copy {
+        color: var(--muted);
+        font-size: 0.97rem;
+        line-height: 1.5;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .panel {
+        padding: 20px;
+      }
+
+      .panel h2 {
+        margin: 0 0 14px;
+        font-size: 1.15rem;
+      }
+
+      .meta {
+        display: grid;
+        gap: 12px;
+      }
+
+      .meta-row {
+        display: grid;
+        gap: 6px;
+      }
+
+      .meta-label {
+        color: rgba(36, 29, 22, 0.55);
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+
+      .meta-value {
+        font-size: 0.98rem;
+        line-height: 1.45;
+        color: var(--ink);
+        word-break: break-word;
+      }
+
+      .actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      button {
+        appearance: none;
+        border: 0;
+        border-radius: 999px;
+        min-height: 48px;
+        padding: 0 18px;
+        font: inherit;
+        font-weight: 800;
+        cursor: pointer;
+        transition:
+          transform 140ms ease,
+          background-color 140ms ease,
+          box-shadow 140ms ease,
+          opacity 140ms ease;
+      }
+
+      button:hover:not(:disabled) {
+        transform: translateY(-1px);
+      }
+
+      button:disabled {
+        cursor: not-allowed;
+        opacity: 0.55;
+      }
+
+      .button-primary {
+        background: var(--green);
+        color: #fff7ef;
+        box-shadow: 0 12px 20px rgba(103, 132, 77, 0.26);
+      }
+
+      .button-secondary {
+        background: rgba(255, 255, 255, 0.84);
+        color: var(--ink);
+      }
+
+      .note-list {
+        display: grid;
+        gap: 10px;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .error {
+        margin: 0;
+        padding: 14px 16px;
+        border-radius: 18px;
+        background: var(--red-soft);
+        color: #8c3d3d;
+        font-weight: 700;
+      }
+
+      @media (max-width: 720px) {
+        main {
+          padding-inline: 16px;
+        }
+
+        .grid,
+        .actions {
+          grid-template-columns: 1fr;
+        }
+
+        .hero,
+        .panel {
+          border-radius: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="shell">
+        <section class="hero">
+          <p class="eyebrow">Classroom CodeNames Host</p>
+          <h1>Ready the room with one click.</h1>
+          <p class="lede">
+            This desktop app starts the built-in classroom server, saves data on this computer,
+            opens the teacher screen, and gives you the LAN link students can use on phones,
+            tablets, and other laptops.
+          </p>
+          <div class="status-row">
+            <span class="status-pill" data-role="status-badge">Preparing</span>
+            <span class="status-copy" data-role="status-message">Preparing Classroom CodeNames.</span>
+          </div>
+        </section>
+
+        <p class="error" data-role="error-message" hidden></p>
+
+        <section class="grid">
+          <article class="panel">
+            <h2>Network</h2>
+            <div class="meta">
+              <div class="meta-row">
+                <span class="meta-label">Teacher Window</span>
+                <span class="meta-value" data-role="local-url">Preparing...</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-label">Student LAN Link</span>
+                <span class="meta-value" data-role="lan-url">Detecting local network address...</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <h2>Storage</h2>
+            <div class="meta">
+              <div class="meta-row">
+                <span class="meta-label">Data Folder</span>
+                <span class="meta-value" data-role="data-path">Preparing...</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-label">Logs Folder</span>
+                <span class="meta-value" data-role="logs-path">Preparing...</span>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="panel">
+          <h2>Actions</h2>
+          <div class="actions">
+            <button class="button-primary" data-action="open-teacher">Open Teacher Window</button>
+            <button class="button-primary" data-action="open-browser">Open in Browser</button>
+            <button class="button-secondary" data-action="copy-lan">Copy LAN URL</button>
+            <button class="button-secondary" data-action="restart">Restart Server</button>
+            <button class="button-secondary" data-action="open-data">Open Data Folder</button>
+            <button class="button-secondary" data-action="open-logs">Open Logs Folder</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>Before Class</h2>
+          <ul class="note-list">
+            <li>Keep this app open while the room is in use so students stay connected.</li>
+            <li>Students should join from the LAN link on the same Wi-Fi or wired network.</li>
+            <li>The first launch may trigger a macOS or Windows firewall prompt for local network access.</li>
+          </ul>
+        </section>
+      </div>
+    </main>
+    <script type="module" src="./host-renderer.mjs"></script>
+  </body>
+</html>

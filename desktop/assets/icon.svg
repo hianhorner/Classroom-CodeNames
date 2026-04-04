@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Classroom CodeNames icon">
+  <defs>
+    <linearGradient id="paper" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#fcf5ea"/>
+      <stop offset="100%" stop-color="#e8dccd"/>
+    </linearGradient>
+    <linearGradient id="redTile" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#d35c58"/>
+      <stop offset="100%" stop-color="#b64040"/>
+    </linearGradient>
+    <linearGradient id="blueTile" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#4a77db"/>
+      <stop offset="100%" stop-color="#2b5dc4"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="128" fill="url(#paper)"/>
+  <g opacity="0.18" stroke="#ffffff" stroke-width="1">
+    <path d="M0 92.5h512"/>
+    <path d="M0 184.5h512"/>
+    <path d="M0 276.5h512"/>
+    <path d="M0 368.5h512"/>
+    <path d="M92.5 0v512"/>
+    <path d="M184.5 0v512"/>
+    <path d="M276.5 0v512"/>
+    <path d="M368.5 0v512"/>
+  </g>
+  <rect x="68" y="96" width="170" height="150" rx="34" fill="url(#redTile)"/>
+  <rect x="274" y="96" width="170" height="150" rx="34" fill="url(#blueTile)"/>
+  <rect x="68" y="266" width="170" height="150" rx="34" fill="#fffaf2"/>
+  <rect x="274" y="266" width="170" height="150" rx="34" fill="#fffaf2"/>
+  <text x="153" y="191" fill="#fffaf2" font-family="Avenir Next, Arial, sans-serif" font-size="92" font-weight="800" text-anchor="middle">C</text>
+  <text x="359" y="191" fill="#fffaf2" font-family="Avenir Next, Arial, sans-serif" font-size="92" font-weight="800" text-anchor="middle">N</text>
+  <text x="154" y="355" fill="#1f1915" font-family="Avenir Next, Arial, sans-serif" font-size="74" font-weight="800" text-anchor="middle">C</text>
+  <text x="359" y="355" fill="#1f1915" font-family="Avenir Next, Arial, sans-serif" font-size="74" font-weight="800" text-anchor="middle">C</text>
+</svg>

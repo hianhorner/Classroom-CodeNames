@@ -1,0 +1,64 @@
+Original prompt: In the subgroup chats, the latest chat should always be the top of the list. Also add the design that each box of text from a user looks like it would in a social media chat, so your own comments look like speech bubbles that came from you with the little flair from the left and the speech bubbles are from others with the little flare to right. The entire contianer should only expand to reach the bottom of the board game as well.
+
+- Added live clue text/count support to the room state, socket events, and SQLite schema.
+- Switched guesser voting to allow multiple active votes per player up to the current clue count.
+- Reworked guesser, spymaster, and presentation screens to show clue/count state and to better fit the board within the viewport.
+- Restyled subgroup chat with newest-first ordering, speech bubbles, and a constrained scroll area.
+- Verified `npm run typecheck` and `npm run build` after the changes.
+- Browser check: captured the live start page and a seeded presentation page in `output/web-game/start-check` and `output/web-game/presentation-check`.
+- Service smoke: confirmed clue text/count persistence, three active viewer votes for a single guesser when the clue count is `3`, aggregated vote tallies across two guessers, and newest-first chat ordering.
+- TODO: Add a fuller automated browser walkthrough for authenticated guesser/spymaster routes if we want screenshot-based regression coverage for the chat bubble states on both sides.
+- Lobby UI pass: removed the duplicate lobby timer display box, narrowed the lobby rail, switched the assignment board to red-left/blue-right columns, and changed the bucket chips to wrapped 200px tiles instead of stretched rows.
+- Lobby styling pass: reduced assignment grid gaps, strengthened red/blue zone backgrounds, moved zone copy to white on colored buckets, and flattened the waiting pool so it reads as one larger surface with fewer nested layers.
+- Verification: `npm run build --workspace client` passed, and a Playwright screenshot check against `http://localhost:5173` captured the updated lobby in `output/web-game/lobby-check-localhost/shot-0.png`.
+- Note: a first screenshot attempt against `127.0.0.1`/`:5174` failed because the server CORS config only allows `http://localhost:5173`.
+- Student flow pass: added a dedicated `/room/:roomCode/join` student login page, updated the lobby join link to point there, and reused the animated home-page preview board so students no longer land on a teacher-only start screen.
+- Waiting-screen pass: replaced the old student lobby cards with a blank silver waiting screen, a rotating quote card that flips every 5 seconds, and alternating red/blue background surge pulses every 10 seconds.
+- Lobby empty-state tweak: the `Drop players here` state now uses a 2px black dotted border to read more like a clear drop target.
+- Verification: `npm run build` passed before the waiting-screen polish, `npm run build --workspace client` passed after the surge adjustment, and browser screenshots were captured for the student join page in `output/web-game/student-join-check/shot-0.png` and the waiting screen in `output/web-game/student-waiting-check-2/shot-1.png`.
+- Assigned waiting-state pass: when a student receives a team/role in the lobby, the waiting page now switches to an assignment headline, shows role-specific instructions, and lets the background settle into the assigned team color instead of continuing the alternating surge.
+- Verification: `npm run build --workspace client` passed, and an assigned student waiting-state screenshot was captured in `output/web-game/student-assigned-waiting-check/shot-0.png`.
+- Lobby stability fix: the assignment board no longer rebuilds its local buckets on every `players` list update, so disconnect/reconnect status changes do not overwrite the teacher’s current assignment layout with an older snapshot.
+- Lobby drag polish: added a proper drag overlay and hid the source chip while dragging so the stretched translucent ghost box no longer appears in the drop zones.
+- Verification: `npm run build --workspace client` passed, and a service smoke confirmed the underlying room assignments remain unchanged when a new player joins after existing students have already been assigned.
+- Guesser-page fix: moved the candidate-selection `useEffect` hooks ahead of the loading early-return so the component no longer changes hook order when room state finishes loading.
+- Verification: `npm run build --workspace client` passed, and a live browser check rendered the guesser route successfully in `output/web-game/guesser-live-check/shot-0.png`.
+- Clue-lock rule pass: once a spymaster submits the clue for the round, the backend now rejects any second clue update until the next turn resets the round state.
+- Spymaster lock UI pass: the clue panel becomes semi-transparent and shows a large `DONE` overlay across the full panel after submission.
+- Verification: `npm run build` passed, a direct service smoke confirmed `canEditClue` becomes `false` after the first clue and a second update fails with `The clue is already locked for this round.`, and the locked UI was captured in `output/web-game/spymaster-done-check/shot-0.png`.
+
+- Multi-guess reveal flow pass: removed the captain single-lock gameplay path, added persisted clue-cycle reveal allowances, and now allow the teacher to reveal voted cards in manual order while misses/assassin resolve automatically.
+- Client/UI pass: guesser confirm UI removed, presentation now exposes revealable voted cards plus End Guessing, and room state now includes revealable tiles plus remaining reveals.
+- Verification: `npm run typecheck` and `npm run build` both passed after the multi-guess refactor.
+- Service smoke: confirmed clue count 3 yields 4 reveals, correct reveals decrement and preserve other votes, `End Guessing` passes turns, misses auto-pass, and assassin ends the game for the other team.
+- Browser check: captured `output/web-game/multi-guess-guesser-check/shot-0.png`, `output/web-game/multi-guess-presentation-check/shot-0.png`, and `output/web-game/multi-guess-presentation-check/teacher-shot-0.png`; DOM summaries confirmed the guesser page no longer shows a confirm button and the teacher presentation page exposes `End Guessing` plus revealable voted cards only.
+- Spymaster captain pass: added separate current spymaster captain tracking, clue panel state, and passive spymaster rail messaging for non-captain teammates.
+- Verification: `npm run typecheck` and `npm run build` passed after the spymaster captain split.
+- Service smoke: confirmed only the current spymaster captain can submit the clue, the captain panel becomes `done`, non-captain teammates stay `inactive`, and spymaster captain rotation advances by join order when that team turn ends.
+- Round summary intermission pass: added a persisted `summary` game phase, room-backed round-summary payloads, and teacher-controlled continue flow between clue cycles instead of instantly jumping into the next turn.
+- Passive opposing vote pass: split votes into `active` and `passive` scopes so the inactive guesser team can place private prediction votes during the other team turn without affecting reveal eligibility.
+- Modal UI pass: added the centered round-summary overlay to presentation, guesser, and spymaster views with a dimmed backdrop, headline stats, supporting metrics, reveal sequence chips, and presentation-only continue support.
+- Verification: `npm run typecheck` and `npm run build` passed after the summary/passive-vote changes.
+- Service smoke: confirmed active and passive tallies stay separate, correct reveals keep the clue cycle alive, wrong reveals enter `summary`, summary disables further voting, and teacher continue opens the next team turn with summary cleared.
+- Browser check: captured the summary modal on the live presentation route in `output/web-game/round-summary-presentation-check/shot-0.png`.
+- Word-pack setup pass: added teacher-only word-pack APIs and page flow for manual 25-word entry, spreadsheet upload, saved library browsing, and room-level application before game start.
+- Storage pass: added global SQLite `word_packs` storage plus room-level selected word-pack config so packs persist across rooms on the local machine and selected packs drive board generation on `startGame`.
+- Spreadsheet pass: added `.xlsx` template generation plus upload validation for partial Red/Blue/Assassin overrides with forced starting-team detection when a pack requires 9 words for one team.
+- Lobby pass: removed the header room-code pill, replaced the old non-working button with `Wordpack`, and added current word-pack status text to the teacher lobby header.
+- Verification: `npm run typecheck` and `npm run build` passed after the word-pack feature landed.
+- Service smoke: confirmed manual save/list/apply works, room state reflects the selected pack, start game uses the applied 25 manual words, and spreadsheet uploads force the correct starting team while preserving override words and the assassin.
+- Browser check: captured the new teacher word-pack page in `output/web-game/wordpack-page-check/shot-0.png`.
+- Responsive layout pass: kept the main desktop-style structures intact through iPad/tablet widths for lobby, word-pack, guesser, spymaster, and presentation instead of collapsing those layouts too early.
+- Chat expansion pass: added expand/collapse controls to subgroup chat on guesser and spymaster pages so chat can take the full side rail on desktop/tablet and open as a full-height overlay sheet on phone.
+- Mobile board-first pass: on phone-width game pages, the board stays the primary view and chat opens from an explicit `Open Chat` control instead of rendering as a squeezed second column.
+- Verification: `npm run typecheck` and `npm run build` passed after the responsive/chat expansion changes.
+- Browser check: captured responsive screenshots in `output/web-game/responsive-layout-check/room_H57LZT_lobby_1024x1366.png`, `output/web-game/responsive-layout-check/room_H57LZT_guesser_1024x1366.png`, `output/web-game/responsive-layout-check/room_H57LZT_guesser_expanded_1024x1366.png`, and `output/web-game/responsive-layout-check/room_H57LZT_guesser_390x844.png`.
+- LAN preview pass: added single-origin preview support so Express can serve the built client and sockets/API from one URL for other devices on the same network.
+- Host-aware URL pass: server join links now use `APP_BASE_URL`, the client resolves API/socket targets from the current host in preview mode, and launcher/docs were updated around the LAN flow.
+- Tooling pass: added `npm run preview:lan`, `npm run validate:lan`, `scripts/lanPreview.mjs`, `scripts/validateLanPreview.mjs`, and a manual device checklist in `docs/lan-validation-checklist.md`.
+- Validation goal: the new smoke script is intended to cover room creation, assignment persistence, word packs, routing, chat isolation, active/passive votes, summary pause, and continue-to-next-turn behavior from a single-origin preview server.
+- Session storage fix: client sessions are now stored as a room-keyed map instead of one global browser slot, so student joins in one room no longer overwrite the teacher identity for another room.
+- Room-state reliability pass: `useRoomState` now allows Socket.IO polling fallback instead of forcing websocket-only transport and also silently refreshes room state every 3 seconds as a safety net for LAN/device cases where live socket updates are flaky.
+- Verification: `npm run typecheck --workspace client` and `npm run build --workspace client` both passed after the session + room-state reliability changes.
+- Victory celebration pass: added a dependency-free victory-page confetti burst timed after the existing fade plus a subtle background rain of pixel-style taco sprites, with cleanup on unmount and reduced-motion detection.
+- Topbar info pass: added a soft right-aligned game-page player info strip showing assigned total/red/blue counts plus a `Your name:` label before the existing name pill on guesser, spymaster, presentation, and victory screens.

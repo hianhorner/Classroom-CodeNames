@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lexicon Tabletop - Presentation Screen</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-container": "#e9d5e0",
+              "secondary-fixed": "#d9e2ff",
+              "secondary": "#1c59c1",
+              "primary-fixed": "#ffdad7",
+              "inverse-primary": "#ffb3ae",
+              "outline-variant": "#cfc5bb",
+              "surface-dim": "#e6d8c9",
+              "tertiary-fixed": "#f2dde8",
+              "surface-container-highest": "#eee0d1",
+              "primary-fixed-dim": "#ffb3ae",
+              "on-error-container": "#93000a",
+              "outline": "#7e766d",
+              "on-primary-fixed-variant": "#8d141c",
+              "on-error": "#ffffff",
+              "on-primary-fixed": "#410005",
+              "on-background": "#211a11",
+              "secondary-container": "#6192fe",
+              "on-tertiary-container": "#6a5b64",
+              "on-surface": "#211a11",
+              "error-container": "#ffdad6",
+              "on-tertiary-fixed-variant": "#51434c",
+              "surface-container-low": "#fff1e4",
+              "secondary-fixed-dim": "#b0c6ff",
+              "error": "#ba1a1a",
+              "surface": "#fff8f4",
+              "surface-tint": "#ae2f31",
+              "surface-container": "#faecdc",
+              "on-tertiary-fixed": "#231820",
+              "tertiary": "#695a63",
+              "on-secondary-container": "#002b6b",
+              "inverse-surface": "#372f25",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-high": "#f4e6d7",
+              "surface-bright": "#fff8f4",
+              "primary-container": "#ffcfcb",
+              "inverse-on-surface": "#fdeedf",
+              "primary": "#ae2f31",
+              "on-tertiary": "#ffffff",
+              "on-primary-container": "#af2f32",
+              "surface-variant": "#eee0d1",
+              "on-secondary-fixed": "#001945",
+              "on-secondary": "#ffffff",
+              "tertiary-fixed-dim": "#d5c1cc",
+              "on-primary": "#ffffff",
+              "on-surface-variant": "#4c463e",
+              "background": "#fff8f4",
+              "on-secondary-fixed-variant": "#00419c"
+            },
+            fontFamily: {
+              "headline": ["Manrope", "sans-serif"],
+              "body": ["Inter", "sans-serif"],
+              "label": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #e6d8c9; /* surface-dim */
+        }
+    </style>
+</head>
+<body class="font-body text-on-background min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-[#faecdc] dark:bg-stone-900 flex justify-between items-center w-full px-8 py-4 docked full-width top-0 sticky z-50">
+<div class="flex items-center gap-6">
+<span class="text-2xl font-black text-[#211a11] dark:text-[#faecdc] font-headline tracking-tight">Lexicon Tabletop</span>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="text-[#211a11]/60 dark:text-[#faecdc]/60 font-manrope tracking-tight font-bold hover:text-[#ae2f31] transition-colors duration-200" href="#">How to Play</a>
+<a class="text-[#211a11]/60 dark:text-[#faecdc]/60 font-manrope tracking-tight font-bold hover:text-[#ae2f31] transition-colors duration-200" href="#">Settings</a>
+<a class="text-[#ae2f31] border-b-2 border-[#ae2f31] pb-1 font-manrope tracking-tight font-bold" href="#">End Game</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-4 py-2 bg-surface-container-highest rounded-full text-on-surface font-bold text-sm">
+<span class="material-symbols-outlined text-sm" data-icon="style">style</span>
+                Cards Remaining: 15
+            </div>
+<div class="flex gap-2">
+<button class="p-2 hover:text-[#ae2f31] transition-colors duration-200 scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="timer">timer</span>
+</button>
+<button class="p-2 hover:text-[#ae2f31] transition-colors duration-200 scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="refresh">refresh</span>
+</button>
+</div>
+<button class="bg-[#ae2f31] text-white px-6 py-2 rounded-full font-manrope tracking-tight font-bold hover:opacity-90 transition-opacity">
+                Next Round
+            </button>
+</div>
+</header>
+<main class="flex-grow flex flex-col items-center px-4 py-8">
+<!-- Timer Area -->
+<section class="mb-12 flex flex-col items-center">
+<div class="flex items-center gap-3 mb-2">
+<span class="material-symbols-outlined text-primary" data-icon="schedule">schedule</span>
+<span class="text-on-surface/60 font-bold uppercase tracking-widest text-xs">Clue Timer</span>
+</div>
+<div class="text-7xl font-headline font-black text-on-surface tracking-tighter">
+                02:00
+            </div>
+</section>
+<!-- Board Area (5x5 Grid) -->
+<section class="w-full max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-4 px-4">
+<!-- Word Tiles -->
+<div class="bg-[#ffffff] h-28 flex items-center justify-center rounded-xl shadow-[0px_12px_32px_rgba(33,26,17,0.06)] hover:bg-[#eee0d1] transition-all cursor-pointer group active:scale-95 duration-200 border-b-4 border-transparent hover:border-outline-variant/20">
+<span class="text-xl font-bold text-[#2b2b2b] uppercase tracking-wide">TRADE</span>
+</div>
+<div class="bg-[#ffffff] h-28 flex items-center justify-center rounded-xl shadow-[0px_12px_32px_rgba(33,26,17,0.06)] hover:bg-[#eee0d1] transition-all cursor-pointer group active:scale-95 duration-200 border-b-4 border-transparent">
+<span class="text-xl font-bold text-[#2b2b2b] uppercase tracking-wide">MARKET</span>
+</div>
+<div class="bg-[#ffffff] h-28 flex items-center justify-center rounded-xl shadow-[0px_12px_32px_rgba(33,26,17,0.06)] hover:bg-[#eee0d1] transition-all cursor-pointer group active:scale-95 duration-200 border-b-4 border-transparent">
+<span class="text-xl font-bold text-[#2b2b2b] uppercase tracking-wide">SUPPLY</span>
+</div>
+<div class="bg-[#ffffff] h-28 flex items-center justify-center rounded-xl shadow-[0px_12px_32px_rgba(33,26,17,0.06)] hover:bg-[#eee0d1] transition-all cursor-pointer group active:scale-95 duration-200 border-b-4 border-transparent">
+<span class="text-xl font-bold text-[#2b2b2b] uppercase tracking-wide">DEMAND</span>
+</div>
+<div class="bg-[#ffffff] h-28 flex items-center justify-center rounded-xl shadow-[0px_12px_32px_rgba(33,26,17,0.06)] hover:bg-[#eee0d1] transition-all cursor-pointer group active:scale-95 duration-200 border-b-4 border-transparent">
+<span class="text-xl font-bold text-[#2b2b2b] uppercase tracking-wide">LABOR</span>
+</div>
+<div class="bg-[#ffffff] h-28 flex items-center justify-center rounded-xl shadow-[0px_12px_32px_rgba(33,26,17,0.06)] hover:bg-[#eee0d1] transition-all cursor-pointer group active:scale-95 duration-200">
+<span class="text-xl font-bold text-[#2b2b2b] uppercase tracking-wide">CAPITAL</span>
+</div>
+<div class="bg-[#ffffff] h-28 flex items-center justify-center rounded-xl shadow-[0px_12px_32px_rgba(33,26,17,0.06)] hover:bg-[#eee0d1] transition-all cursor-pointer group active:scale-95 duration-200">
+<span class="text-xl font-bold text-[#2b2b2b] uppercase tracking-wide">OFFER</span>
+</div>
+<div class="bg-[#ffffff] h-28 flex items-center justify-center rounded-xl shadow-[0px_12px_32px_rgba(33,26,17,0.06)] hover:bg-[#eee0d1] transition-all cursor-pointer group active:scale-95 duration-200">
+<span class="text-xl font-bold text-[#2b2b2b] uppercase tracking-wide">PRICE</span>
+</div>
+<div class="bg-[#ffffff] h-28 flex items-center justify-center rounded-xl shadow-[0px_12px_32px_rgba(33,26,17,0.06)] hover:bg-[#eee0d1] transition-all cursor-pointer group active:scale-95 duration-200">
+<span class="text-xl font-bold text-[#2b2b2b] uppercase tracking-wide">EQUITY</span>
+</div>
+<div class="bg-[#ffffff] h-28 flex items-center justify-center rounded-xl shadow-[0px_12px_32px_rgba(33,26,17,0.06)] hover:bg-[#eee0d1] transition-all cursor-pointer group active:scale-95 duration-200">
+<span class="text-xl font-bold text-[#2b2b2b] uppercase tracking-wide">GROSS</span>
+</div>
+<div class="bg-[#ffffff] h-28 flex items-center justify-center rounded-xl shadow-[0px_12px_32px_rgba(33,26,17,0.06)] hover:bg-[#eee0d1] transition-all cursor-pointer group active:scale-95 duration-200">
+<span class="text-xl font-bold text-[#2b2b2b] uppercase tracking-wide">BULL</span>
+</div>
+<div class="bg-[#ffffff] h-28 flex items-center justify-center rounded-xl shadow-[0px_12px_32px_rgba(33,26,17,0.06)] hover:bg-[#eee0d1] transition-all cursor-pointer group active:scale-95 duration-200">
+<span class="text-xl font-bold text-[#2b2b2b] uppercase tracking-wide">BEAR</span>
+</div>
+<div class="bg-[#ffffff] h-28 flex items-center justify-center rounded-xl shadow-[0px_12px_32px_rgba(33,26,17,0.06)] hover:bg-[#eee0d1] transition-all cursor-pointer group active:scale-95 duration-200">
+<span class="text-xl font-bold text-[#2b2b2b] uppercase tracking-wide">INDEX</span>
+</div>
+<div class="bg-[#ffffff] h-28 flex items-center justify-center rounded-xl shadow-[0px_12px_32px_rgba(33,26,17,0.06)] hover:bg-[#eee0d1] transition-all cursor-pointer group active:scale-95 duration-200">
+<span class="text-xl font-bold text-[#2b2b2b] uppercase tracking-wide">TAXES</span>
+</div>
+<div class="bg-[#ffffff] h-28 flex items-center justify-center rounded-xl shadow-[0px_12px_32px_rgba(33,26,17,0.06)] hover:bg-[#eee0d1] transition-all cursor-pointer group active:scale-95 duration-200">
+<span class="text-xl font-bold text-[#2b2b2b] uppercase tracking-wide">BOND</span>
+</div>
+<div class="bg-[#ffffff] h-28 flex items-center justify-center rounded-xl shadow-[0px_12px_32px_rgba(33,26,17,0.06)] hover:bg-[#eee0d1] transition-all cursor-pointer group active:scale-95 duration-200">
+<span class="text-xl font-bold text-[#2b2b2b] uppercase tracking-wide">DEBT</span>
+</div>
+<div class="bg-[#ffffff] h-28 flex items-center justify-center rounded-xl shadow-[0px_12px_32px_rgba(33,26,17,0.06)] hover:bg-[#eee0d1] transition-all cursor-pointer group active:scale-95 duration-200">
+<span class="text-xl font-bold text-[#2b2b2b] uppercase tracking-wide">VALUE</span>
+</div>
+<div class="bg-[#ffffff] h-28 flex items-center justify-center rounded-xl shadow-[0px_12px_32px_rgba(33,26,17,0.06)] hover:bg-[#eee0d1] transition-all cursor-pointer group active:scale-95 duration-200">
+<span class="text-xl font-bold text-[#2b2b2b] uppercase tracking-wide">FUNDS</span>
+</div>
+<div class="bg-[#ffffff] h-28 flex items-center justify-center rounded-xl shadow-[0px_12px_32px_rgba(33,26,17,0.06)] hover:bg-[#eee0d1] transition-all cursor-pointer group active:scale-95 duration-200">
+<span class="text-xl font-bold text-[#2b2b2b] uppercase tracking-wide">BANK</span>
+</div>
+<div class="bg-[#ffffff] h-28 flex items-center justify-center rounded-xl shadow-[0px_12px_32px_rgba(33,26,17,0.06)] hover:bg-[#eee0d1] transition-all cursor-pointer group active:scale-95 duration-200">
+<span class="text-xl font-bold text-[#2b2b2b] uppercase tracking-wide">RISK</span>
+</div>
+<div class="bg-[#ffffff] h-28 flex items-center justify-center rounded-xl shadow-[0px_12px_32px_rgba(33,26,17,0.06)] hover:bg-[#eee0d1] transition-all cursor-pointer group active:scale-95 duration-200">
+<span class="text-xl font-bold text-[#2b2b2b] uppercase tracking-wide">FLOW</span>
+</div>
+<div class="bg-[#ffffff] h-28 flex items-center justify-center rounded-xl shadow-[0px_12px_32px_rgba(33,26,17,0.06)] hover:bg-[#eee0d1] transition-all cursor-pointer group active:scale-95 duration-200">
+<span class="text-xl font-bold text-[#2b2b2b] uppercase tracking-wide">GAIN</span>
+</div>
+<div class="bg-[#ffffff] h-28 flex items-center justify-center rounded-xl shadow-[0px_12px_32px_rgba(33,26,17,0.06)] hover:bg-[#eee0d1] transition-all cursor-pointer group active:scale-95 duration-200">
+<span class="text-xl font-bold text-[#2b2b2b] uppercase tracking-wide">LOAN</span>
+</div>
+<div class="bg-[#ffffff] h-28 flex items-center justify-center rounded-xl shadow-[0px_12px_32px_rgba(33,26,17,0.06)] hover:bg-[#eee0d1] transition-all cursor-pointer group active:scale-95 duration-200">
+<span class="text-xl font-bold text-[#2b2b2b] uppercase tracking-wide">SAVE</span>
+</div>
+<div class="bg-[#ffffff] h-28 flex items-center justify-center rounded-xl shadow-[0px_12px_32px_rgba(33,26,17,0.06)] hover:bg-[#eee0d1] transition-all cursor-pointer group active:scale-95 duration-200">
+<span class="text-xl font-bold text-[#2b2b2b] uppercase tracking-wide">CASH</span>
+</div>
+</section>
+<!-- Bottom Team Status -->
+<footer class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-6 pb-8 pt-4 bg-[#faecdc]/80 backdrop-blur-md rounded-t-3xl shadow-[0px_-12px_32px_rgba(33,26,17,0.06)] border-t border-[#cfc5bb]/30">
+<!-- Red Team Container -->
+<div class="flex flex-col items-center justify-center bg-[#ffffff] dark:bg-stone-800 text-[#ae2f31] rounded-xl px-8 py-4 ring-2 ring-[#ae2f31]/30 shadow-lg shadow-[#ae2f31]/10 transition-all cubic-bezier(0.2,0.8,0.2,1)">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined fill" data-icon="shield" style="font-variation-settings: 'FILL' 1;">shield</span>
+<span class="font-inter font-bold text-lg uppercase tracking-widest">Red Team: 8</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-[#ae2f31] animate-pulse"></span>
+<span class="text-xs font-bold opacity-70 uppercase tracking-tighter">Your Turn</span>
+</div>
+</div>
+<!-- Team Log/Stats (Center) -->
+<div class="hidden md:flex gap-4">
+<div class="flex flex-col items-center justify-center text-[#211a11]/70 px-6 py-2">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-inter font-bold text-xs uppercase tracking-widest mt-1">Log</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#211a11]/70 px-6 py-2">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-inter font-bold text-xs uppercase tracking-widest mt-1">Players</span>
+</div>
+</div>
+<!-- Blue Team Container -->
+<div class="flex flex-col items-center justify-center text-[#1c59c1]/70 dark:text-[#faecdc]/70 px-8 py-4 bg-surface-container-low rounded-xl transition-all">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined" data-icon="shield">shield</span>
+<span class="font-inter font-bold text-lg uppercase tracking-widest">Blue Team: 7</span>
+</div>
+<span class="text-xs font-bold opacity-50 uppercase tracking-tighter">Waiting</span>
+</div>
+</footer>
+</main>
+<!-- Visual Polish: Tabletop Texture Overlay (Decorative) -->
+<div class="fixed inset-0 pointer-events-none opacity-[0.03] mix-blend-multiply" data-alt="subtle felt texture overlay to simulate a physical tabletop board game surface" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDlIlV9g8Hr1jwn5G8Y9VmWZzdJnFI3DzuOh5RcknUFqDzz5FBvhRAPEw76IEQ5VeTXdp7RsN-xZAfdW-tJSYV2xqSkYmeH-rKp8S0sY9a0zHygfGKAGX53cZ55MkzlcbjHhRZyScOFRpg9bXpUwxB-6vwUJaK3GcgAWT0Bj57jCSWXz7fL_TUkbO0mnntfFK_rE4m5_wW_TRjn8YDR3H9EuvjRqBHozVFa9TnfeGvY2NFMov5immHGf7_ZjdeSV4Yhm1MnWOGYZE0');"></div>
+</body></html>

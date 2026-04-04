@@ -1,0 +1,15 @@
+node_modules
+dist
+.DS_Store
+.env
+server/data
+*.log
+.launcher
+output
+*.pid
+*.sqlite
+dist-installers
+client/dist
+server/dist
+shared/dist
+desktop/build
