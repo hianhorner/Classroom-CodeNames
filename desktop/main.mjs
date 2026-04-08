@@ -1,4 +1,4 @@
-import { app, BrowserWindow, clipboard, dialog, ipcMain, nativeImage, shell } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, nativeImage, shell } from 'electron';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
@@ -14,7 +14,6 @@ const serverEntryPath = path.join(projectRoot, 'server', 'dist', 'index.js');
 const previewPort = Number(process.env.PORT ?? 4173);
 
 let hostWindow = null;
-let teacherWindow = null;
 let serverHandle = null;
 let cachedServerModulePromise = null;
 let runtimePaths = null;
@@ -27,6 +26,15 @@ let statusState = {
   logsPath: '',
   error: null
 };
+
+function getPublicStatus() {
+  return {
+    phase: statusState.phase,
+    message: statusState.message,
+    lanUrl: statusState.lanUrl,
+    error: statusState.error
+  };
+}
 
 function getTimestamp() {
   return new Date().toISOString();
@@ -109,7 +117,7 @@ function getAppIcon() {
 
 function broadcastStatus() {
   BrowserWindow.getAllWindows().forEach((window) => {
-    window.webContents.send('host:status', statusState);
+    window.webContents.send('host:status', getPublicStatus());
   });
 }
 
@@ -136,7 +144,24 @@ function createHostWindow() {
     webPreferences: {
       preload: path.join(desktopDirectory, 'preload.mjs'),
       contextIsolation: true,
-      sandbox: false
+      sandbox: true,
+      nodeIntegration: false
+    }
+  });
+
+  hostWindow.webContents.setWindowOpenHandler(({ url }) => {
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      void shell.openExternal(url);
+    }
+
+    return { action: 'deny' };
+  });
+
+  hostWindow.webContents.on('will-navigate', (event, targetUrl) => {
+    const currentUrl = hostWindow?.webContents.getURL() ?? '';
+
+    if (targetUrl !== currentUrl) {
+      event.preventDefault();
     }
   });
 
@@ -145,30 +170,6 @@ function createHostWindow() {
   });
 
   hostWindow.loadFile(hostHtmlPath);
-}
-
-function createTeacherWindow(url) {
-  if (teacherWindow && !teacherWindow.isDestroyed()) {
-    teacherWindow.focus();
-    teacherWindow.loadURL(url);
-    return;
-  }
-
-  teacherWindow = new BrowserWindow({
-    width: 1440,
-    height: 960,
-    minWidth: 980,
-    minHeight: 720,
-    title: 'Classroom CodeNames',
-    icon: getAppIcon(),
-    autoHideMenuBar: true
-  });
-
-  teacherWindow.on('closed', () => {
-    teacherWindow = null;
-  });
-
-  teacherWindow.loadURL(url);
 }
 
 async function ensureRuntimePaths() {
@@ -254,9 +255,7 @@ async function startEmbeddedServer() {
     logsPath: runtimePaths.logsPath,
     error: null
   });
-
-  await appendLog(`Opening teacher window at ${localUrl}`);
-  createTeacherWindow(localUrl);
+  await appendLog('Server is ready. Waiting for Start action.');
 }
 
 async function restartEmbeddedServer() {
@@ -276,35 +275,17 @@ async function restartEmbeddedServer() {
   }
 }
 
-ipcMain.handle('host:get-status', async () => statusState);
-ipcMain.handle('host:open-teacher-window', async () => {
-  createTeacherWindow(statusState.localUrl);
-});
-ipcMain.handle('host:open-browser', async () => {
-  if (statusState.localUrl) {
-    await shell.openExternal(statusState.localUrl);
-  }
-});
-ipcMain.handle('host:copy-lan-url', async () => {
+ipcMain.handle('host:get-status', async () => getPublicStatus());
+ipcMain.handle('host:open-start', async () => {
   if (!statusState.lanUrl) {
     return '';
   }
 
-  clipboard.writeText(statusState.lanUrl);
+  await shell.openExternal(statusState.lanUrl);
   return statusState.lanUrl;
 });
 ipcMain.handle('host:restart-server', async () => {
   await restartEmbeddedServer();
-});
-ipcMain.handle('host:open-data-folder', async () => {
-  if (runtimePaths?.dataPath) {
-    await shell.openPath(runtimePaths.dataPath);
-  }
-});
-ipcMain.handle('host:open-logs-folder', async () => {
-  if (runtimePaths?.logsPath) {
-    await shell.openPath(runtimePaths.logsPath);
-  }
 });
 
 app.setName('Classroom CodeNames');
@@ -320,10 +301,6 @@ if (!singleInstanceLock) {
         hostWindow.restore();
       }
       hostWindow.focus();
-    }
-
-    if (statusState.phase === 'ready') {
-      createTeacherWindow(statusState.localUrl);
     }
   });
 

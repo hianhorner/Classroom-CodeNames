@@ -96,8 +96,8 @@ That local desktop-host run will:
 - start the embedded local server on `0.0.0.0`
 - save data under the operating system app-data directory
 - open a dedicated host control window
-- open the teacher screen automatically once the server is healthy
-- generate LAN join links that other devices on the same network can use
+- wait for you to press `Start` before opening the classroom in your browser
+- generate a LAN classroom link that other devices on the same network can use
 
 Installer commands:
 
@@ -107,6 +107,8 @@ npm run package:win
 ```
 
 Output installers are written to `dist-installers/`.
+
+On Apple-silicon Macs, use the GitHub Actions Windows job for the canonical Windows installer build instead of relying on a local cross-build.
 
 Current installer targets:
 
@@ -123,6 +125,7 @@ GitHub Actions packaging:
 - You can run it manually from the GitHub Actions tab with `workflow_dispatch`.
 - It also runs automatically for tags that start with `v`.
 - Finished installers are uploaded as workflow artifacts for download.
+- This workflow is the recommended path for cross-platform release validation when working from macOS.
 
 Native runtime note:
 

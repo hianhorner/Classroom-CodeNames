@@ -136,12 +136,6 @@
         line-height: 1.5;
       }
 
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 18px;
-      }
-
       .panel {
         padding: 20px;
       }
@@ -151,34 +145,14 @@
         font-size: 1.15rem;
       }
 
-      .meta {
+      .panel-stack {
         display: grid;
-        gap: 12px;
-      }
-
-      .meta-row {
-        display: grid;
-        gap: 6px;
-      }
-
-      .meta-label {
-        color: rgba(36, 29, 22, 0.55);
-        font-size: 0.72rem;
-        font-weight: 800;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-      }
-
-      .meta-value {
-        font-size: 0.98rem;
-        line-height: 1.45;
-        color: var(--ink);
-        word-break: break-word;
+        gap: 18px;
       }
 
       .actions {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: minmax(0, 1fr);
         gap: 12px;
       }
 
@@ -213,6 +187,11 @@
         box-shadow: 0 12px 20px rgba(103, 132, 77, 0.26);
       }
 
+      .button-start {
+        min-height: 64px;
+        font-size: 1.04rem;
+      }
+
       .button-secondary {
         background: rgba(255, 255, 255, 0.84);
         color: var(--ink);
@@ -242,7 +221,6 @@
           padding-inline: 16px;
         }
 
-        .grid,
         .actions {
           grid-template-columns: 1fr;
         }
@@ -262,7 +240,7 @@
           <h1>Ready the room with one click.</h1>
           <p class="lede">
             This desktop app starts the built-in classroom server, saves data on this computer,
-            opens the teacher screen, and gives you the LAN link students can use on phones,
+            opens the classroom in your browser, and gives you the LAN link students can use on phones,
             tablets, and other laptops.
           </p>
           <div class="status-row">
@@ -273,55 +251,24 @@
 
         <p class="error" data-role="error-message" hidden></p>
 
-        <section class="grid">
-          <article class="panel">
-            <h2>Network</h2>
-            <div class="meta">
-              <div class="meta-row">
-                <span class="meta-label">Teacher Window</span>
-                <span class="meta-value" data-role="local-url">Preparing...</span>
-              </div>
-              <div class="meta-row">
-                <span class="meta-label">Student LAN Link</span>
-                <span class="meta-value" data-role="lan-url">Detecting local network address...</span>
-              </div>
+        <section class="panel-stack">
+          <section class="panel">
+            <h2>Before Class</h2>
+            <ul class="note-list">
+              <li>Keep this app open while the room is in use so students stay connected.</li>
+              <li>Students should join from the LAN link on the same Wi-Fi or wired network.</li>
+              <li>The first launch may trigger a macOS or Windows firewall prompt for local network access.</li>
+            </ul>
+          </section>
+
+          <section class="panel">
+            <h2>Start Classroom</h2>
+            <p class="lede">Open the live classroom link in your browser.</p>
+            <div class="actions">
+              <button class="button-primary button-start" data-action="start">Start</button>
+              <button class="button-secondary" data-action="restart">Restart Server</button>
             </div>
-          </article>
-
-          <article class="panel">
-            <h2>Storage</h2>
-            <div class="meta">
-              <div class="meta-row">
-                <span class="meta-label">Data Folder</span>
-                <span class="meta-value" data-role="data-path">Preparing...</span>
-              </div>
-              <div class="meta-row">
-                <span class="meta-label">Logs Folder</span>
-                <span class="meta-value" data-role="logs-path">Preparing...</span>
-              </div>
-            </div>
-          </article>
-        </section>
-
-        <section class="panel">
-          <h2>Actions</h2>
-          <div class="actions">
-            <button class="button-primary" data-action="open-teacher">Open Teacher Window</button>
-            <button class="button-primary" data-action="open-browser">Open in Browser</button>
-            <button class="button-secondary" data-action="copy-lan">Copy LAN URL</button>
-            <button class="button-secondary" data-action="restart">Restart Server</button>
-            <button class="button-secondary" data-action="open-data">Open Data Folder</button>
-            <button class="button-secondary" data-action="open-logs">Open Logs Folder</button>
-          </div>
-        </section>
-
-        <section class="panel">
-          <h2>Before Class</h2>
-          <ul class="note-list">
-            <li>Keep this app open while the room is in use so students stay connected.</li>
-            <li>Students should join from the LAN link on the same Wi-Fi or wired network.</li>
-            <li>The first launch may trigger a macOS or Windows firewall prompt for local network access.</li>
-          </ul>
+          </section>
         </section>
       </div>
     </main>

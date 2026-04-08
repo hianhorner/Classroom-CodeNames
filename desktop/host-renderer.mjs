@@ -1,16 +1,8 @@
 const statusBadge = document.querySelector('[data-role="status-badge"]');
 const statusMessage = document.querySelector('[data-role="status-message"]');
 const errorMessage = document.querySelector('[data-role="error-message"]');
-const localUrl = document.querySelector('[data-role="local-url"]');
-const lanUrl = document.querySelector('[data-role="lan-url"]');
-const dataPath = document.querySelector('[data-role="data-path"]');
-const logsPath = document.querySelector('[data-role="logs-path"]');
-const openTeacherButton = document.querySelector('[data-action="open-teacher"]');
-const openBrowserButton = document.querySelector('[data-action="open-browser"]');
-const copyLanButton = document.querySelector('[data-action="copy-lan"]');
+const startButton = document.querySelector('[data-action="start"]');
 const restartButton = document.querySelector('[data-action="restart"]');
-const openDataButton = document.querySelector('[data-action="open-data"]');
-const openLogsButton = document.querySelector('[data-action="open-logs"]');
 
 function formatStatusPhase(phase) {
   switch (phase) {
@@ -40,52 +32,20 @@ function renderStatus(status) {
   errorMessage.textContent = status.error ?? '';
   errorMessage.hidden = !status.error;
 
-  localUrl.textContent = status.localUrl || 'Not ready yet';
-  lanUrl.textContent = status.lanUrl || 'Detecting local network address...';
-  dataPath.textContent = status.dataPath || 'Preparing app storage...';
-  logsPath.textContent = status.logsPath || 'Preparing logs...';
-
-  const isReady = status.phase === 'ready';
-  const hasFolders = Boolean(status.dataPath && status.logsPath);
-
-  setButtonState(openTeacherButton, isReady);
-  setButtonState(openBrowserButton, isReady);
-  setButtonState(copyLanButton, isReady && Boolean(status.lanUrl));
-  setButtonState(openDataButton, hasFolders);
-  setButtonState(openLogsButton, hasFolders);
+  const isReady = status.phase === 'ready' && Boolean(status.lanUrl);
+  setButtonState(startButton, isReady);
   setButtonState(restartButton, status.phase !== 'starting');
 }
 
 async function boot() {
   const hostApi = window.classroomCodeNamesHost;
 
-  openTeacherButton?.addEventListener('click', async () => {
-    await hostApi.openTeacherWindow();
-  });
-
-  openBrowserButton?.addEventListener('click', async () => {
-    await hostApi.openBrowser();
-  });
-
-  copyLanButton?.addEventListener('click', async () => {
-    const copiedUrl = await hostApi.copyLanUrl();
-    copyLanButton.textContent = copiedUrl ? 'Copied' : 'Copy LAN URL';
-
-    window.setTimeout(() => {
-      copyLanButton.textContent = 'Copy LAN URL';
-    }, 1400);
+  startButton?.addEventListener('click', async () => {
+    await hostApi.openStart();
   });
 
   restartButton?.addEventListener('click', async () => {
     await hostApi.restartServer();
-  });
-
-  openDataButton?.addEventListener('click', async () => {
-    await hostApi.openDataFolder();
-  });
-
-  openLogsButton?.addEventListener('click', async () => {
-    await hostApi.openLogsFolder();
   });
 
   const initialStatus = await hostApi.getStatus();
@@ -98,10 +58,7 @@ boot().catch((error) => {
   renderStatus({
     phase: 'error',
     message: 'The Classroom CodeNames host window could not initialize.',
-    localUrl: '',
     lanUrl: '',
-    dataPath: '',
-    logsPath: '',
     error: message
   });
 });

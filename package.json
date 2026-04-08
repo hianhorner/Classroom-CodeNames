@@ -1,9 +1,9 @@
 {
   "name": "classroom-codenames",
   "private": true,
-  "version": "0.1.0",
-  "description": "Installable local-network host app for Classroom CodeNames.",
-  "author": "IHateconomics",
+  "version": "0.1.1",
+  "description": "Local classroom host app for Classroom CodeNames on shared networks.",
+  "author": "Classroom CodeNames",
   "main": "desktop/main.mjs",
   "workspaces": [
     "client",
@@ -53,7 +53,7 @@
     "appId": "com.classroomcodenames.host",
     "productName": "Classroom CodeNames",
     "afterPack": "./scripts/afterPack.mjs",
-    "copyright": "Copyright © 2026 nonewhatsoever",
+    "copyright": "Copyright © 2026 Classroom CodeNames",
     "directories": {
       "buildResources": "desktop/build",
       "output": "dist-installers"
@@ -102,7 +102,7 @@
         }
       ],
       "publisherName": [
-        "IHateconomics"
+        "Classroom CodeNames"
       ],
       "icon": "desktop/build/icon.ico",
       "artifactName": "Classroom-CodeNames-${version}-win-${arch}-unsigned.${ext}"
