@@ -72,10 +72,10 @@ jobs:
           $hash = (Get-FileHash $file.FullName -Algorithm SHA256).Hash.ToLower()
           @"
           ## Windows installer
-          - File: `$($file.Name)`
-          - Architecture: `x64`
-          - Signing: `unsigned`
-          - SHA256: `$hash`
+          - File: $($file.Name)
+          - Architecture: x64
+          - Signing: unsigned
+          - SHA256: $hash
           "@ | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
 
       - name: Upload Windows installer
