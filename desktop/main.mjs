@@ -142,7 +142,7 @@ function createHostWindow() {
     autoHideMenuBar: true,
     backgroundColor: '#d8d1c6',
     webPreferences: {
-      preload: path.join(desktopDirectory, 'preload.mjs'),
+      preload: path.join(desktopDirectory, 'preload.cjs'),
       contextIsolation: true,
       sandbox: true,
       nodeIntegration: false

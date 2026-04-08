@@ -4,6 +4,34 @@ const errorMessage = document.querySelector('[data-role="error-message"]');
 const startButton = document.querySelector('[data-action="start"]');
 const restartButton = document.querySelector('[data-action="restart"]');
 
+function createBridgeError(message) {
+  return {
+    phase: 'error',
+    message: 'The Classroom CodeNames host window could not initialize.',
+    lanUrl: '',
+    error: message
+  };
+}
+
+function getHostApi() {
+  const hostApi = window.classroomCodeNamesHost;
+
+  if (!hostApi) {
+    throw new Error('Desktop bridge failed to load. Restart the app.');
+  }
+
+  if (
+    typeof hostApi.getStatus !== 'function' ||
+    typeof hostApi.openStart !== 'function' ||
+    typeof hostApi.restartServer !== 'function' ||
+    typeof hostApi.onStatus !== 'function'
+  ) {
+    throw new Error('Desktop bridge is incomplete. Restart the app.');
+  }
+
+  return hostApi;
+}
+
 function formatStatusPhase(phase) {
   switch (phase) {
     case 'ready':
@@ -38,7 +66,7 @@ function renderStatus(status) {
 }
 
 async function boot() {
-  const hostApi = window.classroomCodeNamesHost;
+  const hostApi = getHostApi();
 
   startButton?.addEventListener('click', async () => {
     await hostApi.openStart();
@@ -55,10 +83,5 @@ async function boot() {
 
 boot().catch((error) => {
   const message = error instanceof Error ? error.message : 'Unable to load the Classroom CodeNames host controls.';
-  renderStatus({
-    phase: 'error',
-    message: 'The Classroom CodeNames host window could not initialize.',
-    lanUrl: '',
-    error: message
-  });
+  renderStatus(createBridgeError(message));
 });
