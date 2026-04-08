@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "description": "Installable local-network host app for Classroom CodeNames.",
-  "author": "Classroom CodeNames",
+  "author": "IHateconomics",
   "main": "desktop/main.mjs",
   "workspaces": [
     "client",
@@ -23,9 +23,9 @@
     "generate:icons": "node scripts/generateIcons.mjs",
     "prepare:desktop": "npm run build:prod && npm run generate:icons && npm run native:electron",
     "desktop:dev": "npm run prepare:desktop && electron .",
-    "package:mac": "npm run prepare:desktop && electron-builder --mac pkg",
-    "package:win": "npm run prepare:desktop && electron-builder --win nsis",
-    "package:all": "npm run prepare:desktop && electron-builder --mac pkg --win nsis",
+    "package:mac": "npm run prepare:desktop && electron-builder --mac pkg --universal",
+    "package:win": "npm run prepare:desktop && electron-builder --win nsis --x64",
+    "package:all": "npm run prepare:desktop && electron-builder --mac pkg --universal --win nsis --x64",
     "preview:lan": "npm run native:node && npm run build && node scripts/lanPreview.mjs",
     "validate:lan": "npm run native:node && npm run build && node scripts/validateLanPreview.mjs",
     "build": "npm run build --workspace client && npm run build --workspace server",
@@ -46,11 +46,14 @@
     "electron": "^35.1.5",
     "electron-builder": "^24.13.3",
     "icon-gen": "^3.0.1",
+    "rcedit": "^4.0.1",
     "tsup": "^8.3.5"
   },
   "build": {
     "appId": "com.classroomcodenames.host",
     "productName": "Classroom CodeNames",
+    "afterPack": "./scripts/afterPack.mjs",
+    "copyright": "Copyright © 2026 nonewhatsoever",
     "directories": {
       "buildResources": "desktop/build",
       "output": "dist-installers"
@@ -75,21 +78,34 @@
     ],
     "mac": {
       "target": [
-        "pkg"
+        {
+          "target": "pkg",
+          "arch": [
+            "universal"
+          ]
+        }
       ],
       "category": "public.app-category.games",
       "icon": "desktop/build/icon.icns",
-      "artifactName": "Classroom-CodeNames-${version}-mac.${ext}"
+      "artifactName": "Classroom-CodeNames-${version}-mac-${arch}-unsigned.${ext}"
     },
     "pkg": {
       "installLocation": "/Applications"
     },
     "win": {
       "target": [
-        "nsis"
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "publisherName": [
+        "IHateconomics"
       ],
       "icon": "desktop/build/icon.ico",
-      "artifactName": "Classroom-CodeNames-${version}-win.${ext}"
+      "artifactName": "Classroom-CodeNames-${version}-win-${arch}-unsigned.${ext}"
     },
     "nsis": {
       "oneClick": false,

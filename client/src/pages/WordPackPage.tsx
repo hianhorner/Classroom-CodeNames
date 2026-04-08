@@ -6,6 +6,7 @@ import {
   applyManualWordPack,
   applySavedWordPack,
   applySpreadsheetWordPack,
+  deleteSavedWordPack,
   getWordPackTemplateUrl,
   getWordPacks,
   saveManualWordPack,
@@ -69,10 +70,15 @@ export function WordPackPage() {
   const [pageMessage, setPageMessage] = useState<string | null>(null);
   const [pageError, setPageError] = useState<string | null>(null);
   const [isBusy, setIsBusy] = useState(false);
+  const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
 
   useCanvasTheme('silver');
 
   const manualValidation = useMemo(() => getManualValidation(manualWords), [manualWords]);
+  const selectedWordPack = useMemo(
+    () => wordPacks.find((wordPack) => wordPack.id === selectedWordPackId) ?? null,
+    [wordPacks, selectedWordPackId]
+  );
 
   useEffect(() => {
     if (!state) {
@@ -215,6 +221,27 @@ export function WordPackPage() {
     });
   }
 
+  async function handleDeleteSavedWordPack() {
+    if (!session?.playerId || !selectedWordPackId) {
+      setPageError('Choose a saved word pack before deleting it.');
+      setIsConfirmingDelete(false);
+      return;
+    }
+
+    const deletingWordPackId = selectedWordPackId;
+    const deletingWordPackName = selectedWordPack?.name ?? 'Selected pack';
+
+    await withPageAction(async () => {
+      await deleteSavedWordPack(normalizedRoomCode, deletingWordPackId, {
+        playerId: session.playerId
+      });
+      await refreshWordPacks();
+      setSelectedWordPackId((current) => (current === deletingWordPackId ? null : current));
+      setIsConfirmingDelete(false);
+      setPageMessage(`Deleted "${deletingWordPackName}" from saved word packs.`);
+    });
+  }
+
   if (isLoading || !state) {
     return <main className="page-shell"><section className="paper-panel"><p>Loading word packs…</p></section></main>;
   }
@@ -290,7 +317,7 @@ export function WordPackPage() {
               </div>
 
               <div className="wordpack-panel__actions">
-                <button className="button button--secondary" type="button" onClick={handleManualSave} disabled={isBusy}>
+                <button className="button button--primary" type="button" onClick={handleManualSave} disabled={isBusy}>
                   Save this Wordpack
                 </button>
                 <button className="button button--primary" type="button" onClick={handleManualApply} disabled={isBusy}>
@@ -329,7 +356,7 @@ export function WordPackPage() {
               </div>
 
               <div className="wordpack-panel__actions">
-                <button className="button button--secondary" type="button" onClick={handleSpreadsheetSave} disabled={isBusy}>
+                <button className="button button--primary" type="button" onClick={handleSpreadsheetSave} disabled={isBusy}>
                   Save this Wordpack
                 </button>
                 <button className="button button--primary" type="button" onClick={handleSpreadsheetApply} disabled={isBusy}>
@@ -366,15 +393,49 @@ export function WordPackPage() {
                 )}
               </div>
 
-              <button className="button button--primary" type="button" onClick={handleApplySavedWordPack} disabled={isBusy || !selectedWordPackId}>
-                Use and return to Lobby
-              </button>
+              <div className="wordpack-panel__actions">
+                <button className="button button--primary" type="button" onClick={handleApplySavedWordPack} disabled={isBusy || !selectedWordPackId}>
+                  Use and return to Lobby
+                </button>
+                <button
+                  className="button button--danger"
+                  type="button"
+                  onClick={() => setIsConfirmingDelete(true)}
+                  disabled={isBusy || !selectedWordPack}
+                >
+                  Delete Selected Pack
+                </button>
+              </div>
             </section>
           </aside>
         </div>
 
         {pageMessage ? <p className="supporting-text">{pageMessage}</p> : null}
         {pageError || error ? <p className="error-banner">{pageError ?? error}</p> : null}
+
+        {isConfirmingDelete ? (
+          <div className="round-summary-overlay round-summary-overlay--player" role="dialog" aria-modal="true" aria-labelledby="delete-wordpack-title">
+            <div className="round-summary-overlay__backdrop" onClick={() => (!isBusy ? setIsConfirmingDelete(false) : undefined)} />
+            <section className="paper-panel confirm-modal">
+              <header className="confirm-modal__header">
+                <h2 id="delete-wordpack-title">Delete saved word pack?</h2>
+                <p>
+                  {selectedWordPack
+                    ? `Delete "${selectedWordPack.name}" from saved word packs? Rooms already using its copied config will keep that config.`
+                    : 'No saved word pack is currently selected.'}
+                </p>
+              </header>
+              <footer className="confirm-modal__actions">
+                <button className="button button--secondary" type="button" onClick={() => setIsConfirmingDelete(false)} disabled={isBusy}>
+                  Cancel
+                </button>
+                <button className="button button--danger" type="button" onClick={handleDeleteSavedWordPack} disabled={isBusy || !selectedWordPack}>
+                  Delete
+                </button>
+              </footer>
+            </section>
+          </div>
+        ) : null}
       </main>
     </>
   );

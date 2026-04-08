@@ -16,6 +16,7 @@ import {
   applyManualWordPack,
   applySavedWordPack,
   applySpreadsheetWordPack,
+  deleteSavedWordPack,
   getTemplateWorkbookBuffer,
   listWordPacks,
   saveManualWordPack,
@@ -215,6 +216,17 @@ export function createApiRouter(broadcastRoomState: BroadcastFn, timerService: T
     try {
       const roomCode = request.params.roomCode.toUpperCase();
       applySavedWordPack(roomCode, String(request.body?.playerId ?? ''), String(request.params.wordPackId ?? ''));
+      broadcastRoomState(roomCode);
+      response.status(204).send();
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  router.post('/rooms/:roomCode/word-packs/:wordPackId/delete', (request, response, next) => {
+    try {
+      const roomCode = request.params.roomCode.toUpperCase();
+      deleteSavedWordPack(roomCode, String(request.body?.playerId ?? ''), String(request.params.wordPackId ?? ''));
       broadcastRoomState(roomCode);
       response.status(204).send();
     } catch (error) {

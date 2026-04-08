@@ -307,6 +307,10 @@ export interface ApplySavedWordPackRequest {
   playerId: string;
 }
 
+export interface DeleteSavedWordPackRequest {
+  playerId: string;
+}
+
 export interface CreateRoomRequest {
   teacherName: string;
 }

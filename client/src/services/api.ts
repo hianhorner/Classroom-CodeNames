@@ -4,6 +4,7 @@ import type {
   ChatMessageView,
   CreateRoomRequest,
   CreateRoomResponse,
+  DeleteSavedWordPackRequest,
   GetRoomStateRequest,
   JoinRoomRequest,
   JoinRoomResponse,
@@ -176,6 +177,13 @@ export function applySpreadsheetWordPack(roomCode: string, playerId: string, fil
 
 export function applySavedWordPack(roomCode: string, wordPackId: string, payload: ApplySavedWordPackRequest) {
   return request<void>(`/rooms/${roomCode}/word-packs/${wordPackId}/apply`, {
+    method: 'POST',
+    body: JSON.stringify(payload)
+  });
+}
+
+export function deleteSavedWordPack(roomCode: string, wordPackId: string, payload: DeleteSavedWordPackRequest) {
+  return request<void>(`/rooms/${roomCode}/word-packs/${wordPackId}/delete`, {
     method: 'POST',
     body: JSON.stringify(payload)
   });

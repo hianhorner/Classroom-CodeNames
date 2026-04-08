@@ -108,6 +108,13 @@ npm run package:win
 
 Output installers are written to `dist-installers/`.
 
+Current installer targets:
+
+- Windows: `x64`
+- macOS: `universal`
+
+Until signing certificates are configured, installer outputs are intentionally labeled as **unsigned**.
+
 GitHub Actions packaging:
 
 - The workflow at [`.github/workflows/build-installers.yml`](/Users/ianhorner/Desktop/Codex%20Projects/Codenames1/.github/workflows/build-installers.yml) builds installers on native runners:

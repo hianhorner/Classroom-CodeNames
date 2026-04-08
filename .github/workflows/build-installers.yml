@@ -27,11 +27,23 @@ jobs:
       - name: Build macOS installer
         run: npm run package:mac -- --publish never
 
+      - name: Summarize macOS installer
+        run: |
+          FILE="$(find dist-installers -maxdepth 1 -name '*.pkg' | head -n 1)"
+          SHA="$(shasum -a 256 "$FILE" | awk '{print $1}')"
+          {
+            echo "## macOS installer"
+            echo "- File: \`$(basename "$FILE")\`"
+            echo "- Architecture: \`universal\`"
+            echo "- Signing: \`unsigned\`"
+            echo "- SHA256: \`$SHA\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Upload macOS installer
         uses: actions/upload-artifact@v4
         with:
-          name: classroom-codenames-mac-installer
-          path: dist-installers/*.pkg
+          name: classroom-codenames-mac-universal-unsigned
+          path: dist-installers/*-mac-universal-unsigned.pkg
           if-no-files-found: error
 
   build-windows:
@@ -54,9 +66,21 @@ jobs:
       - name: Build Windows installer
         run: npm run package:win -- --publish never
 
+      - name: Summarize Windows installer
+        run: |
+          $file = Get-ChildItem dist-installers\*.exe | Select-Object -First 1
+          $hash = (Get-FileHash $file.FullName -Algorithm SHA256).Hash.ToLower()
+          @"
+          ## Windows installer
+          - File: `$($file.Name)`
+          - Architecture: `x64`
+          - Signing: `unsigned`
+          - SHA256: `$hash`
+          "@ | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
+
       - name: Upload Windows installer
         uses: actions/upload-artifact@v4
         with:
-          name: classroom-codenames-windows-installer
-          path: dist-installers/*.exe
+          name: classroom-codenames-windows-x64-unsigned
+          path: dist-installers/*-win-x64-unsigned.exe
           if-no-files-found: error

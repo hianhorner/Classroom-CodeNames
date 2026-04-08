@@ -300,6 +300,24 @@ function applyConfigToRoom(room: RoomWordPackRow, config: WordPackConfig, savedW
   ).run(savedWordPackId, JSON.stringify(config), nowIso(), room.id);
 }
 
+function getWordPackRow(wordPackId: string): WordPackRow {
+  const row = db
+    .prepare(
+      `
+        SELECT id, name, source_type, config_json, created_at, updated_at
+        FROM word_packs
+        WHERE id = ?
+      `
+    )
+    .get(wordPackId) as WordPackRow | undefined;
+
+  if (!row) {
+    throw new AppError('That saved word pack could not be found.', 404);
+  }
+
+  return row;
+}
+
 export function listWordPacks(roomCode: string, actorPlayerId: string): WordPackSummary[] {
   const room = getRoomRow(roomCode);
   assertTeacher(room.id, actorPlayerId);
@@ -350,22 +368,33 @@ export function applySavedWordPack(roomCode: string, actorPlayerId: string, word
   const room = getRoomRow(roomCode);
   assertTeacher(room.id, actorPlayerId);
   assertLobbyEditable(room);
-
-  const row = db
-    .prepare(
-      `
-        SELECT id, name, source_type, config_json, created_at, updated_at
-        FROM word_packs
-        WHERE id = ?
-      `
-    )
-    .get(wordPackId) as WordPackRow | undefined;
-
-  if (!row) {
-    throw new AppError('That saved word pack could not be found.', 404);
-  }
-
+  const row = getWordPackRow(wordPackId);
   applyConfigToRoom(room, JSON.parse(row.config_json) as WordPackConfig, row.id);
+}
+
+export function deleteSavedWordPack(roomCode: string, actorPlayerId: string, wordPackId: string) {
+  const room = getRoomRow(roomCode);
+  assertTeacher(room.id, actorPlayerId);
+  assertLobbyEditable(room);
+  getWordPackRow(wordPackId);
+
+  const timestamp = nowIso();
+  db.transaction(() => {
+    const result = db.prepare('DELETE FROM word_packs WHERE id = ?').run(wordPackId);
+
+    if (!result.changes) {
+      throw new AppError('That saved word pack could not be found.', 404);
+    }
+
+    db.prepare(
+      `
+        UPDATE rooms
+        SET selected_word_pack_id = NULL,
+            updated_at = ?
+        WHERE selected_word_pack_id = ?
+      `
+    ).run(timestamp, wordPackId);
+  })();
 }
 
 export function getAppliedWordPackConfig(roomCode: string): WordPackConfig | null {
