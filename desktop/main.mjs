@@ -1,5 +1,6 @@
 import { app, BrowserWindow, dialog, ipcMain, nativeImage, shell } from 'electron';
 import fs from 'node:fs/promises';
+import net from 'node:net';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -11,7 +12,7 @@ const hostHtmlPath = path.join(desktopDirectory, 'host.html');
 const iconSvgPath = path.join(desktopDirectory, 'assets', 'icon.svg');
 const clientDistPath = path.join(projectRoot, 'client', 'dist');
 const serverEntryPath = path.join(projectRoot, 'server', 'dist', 'index.js');
-const previewPort = Number(process.env.PORT ?? 4173);
+const defaultPort = Number(process.env.PORT ?? 4173);
 
 let hostWindow = null;
 let serverHandle = null;
@@ -20,7 +21,7 @@ let runtimePaths = null;
 let statusState = {
   phase: 'idle',
   message: 'Preparing Classroom CodeNames.',
-  localUrl: `http://127.0.0.1:${previewPort}`,
+  localUrl: `http://127.0.0.1:${defaultPort}`,
   lanUrl: '',
   dataPath: '',
   logsPath: '',
@@ -93,6 +94,77 @@ function wait(ms) {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
+}
+
+function isAddressInUseError(error) {
+  return Boolean(error) && typeof error === 'object' && 'code' in error && error.code === 'EADDRINUSE';
+}
+
+function canListenOnPort(port) {
+  return new Promise((resolve) => {
+    const server = net.createServer();
+
+    server.once('error', () => {
+      resolve(false);
+    });
+
+    server.listen({ port, host: '0.0.0.0', exclusive: true }, () => {
+      server.close(() => {
+        resolve(true);
+      });
+    });
+  });
+}
+
+async function reserveEphemeralPort() {
+  return new Promise((resolve, reject) => {
+    const server = net.createServer();
+
+    server.once('error', reject);
+    server.listen({ port: 0, host: '0.0.0.0', exclusive: true }, () => {
+      const address = server.address();
+      const port = typeof address === 'object' && address ? address.port : 0;
+
+      server.close((closeError) => {
+        if (closeError) {
+          reject(closeError);
+          return;
+        }
+
+        if (!port) {
+          reject(new Error('Unable to reserve an open local port.'));
+          return;
+        }
+
+        resolve(port);
+      });
+    });
+  });
+}
+
+async function resolveServerPort(preferredPort) {
+  if (await canListenOnPort(preferredPort)) {
+    return {
+      port: preferredPort,
+      usedFallback: false
+    };
+  }
+
+  for (let port = preferredPort + 1; port <= preferredPort + 100; port += 1) {
+    if (await canListenOnPort(port)) {
+      return {
+        port,
+        usedFallback: true
+      };
+    }
+  }
+
+  const reservedPort = await reserveEphemeralPort();
+
+  return {
+    port: reservedPort,
+    usedFallback: true
+  };
 }
 
 async function waitForHealth(url, attempts = 60) {
@@ -214,48 +286,65 @@ async function stopEmbeddedServer() {
 
 async function startEmbeddedServer() {
   runtimePaths = await ensureRuntimePaths();
-  const localUrl = `http://127.0.0.1:${previewPort}`;
-  const lanUrl = getLanUrl(previewPort);
-
   await fs.writeFile(runtimePaths.pidFilePath, String(process.pid), 'utf8');
-
-  setStatus({
-    phase: 'starting',
-    message: 'Starting the local classroom server...',
-    localUrl,
-    lanUrl,
-    dataPath: runtimePaths.dataPath,
-    logsPath: runtimePaths.logsPath,
-    error: null
-  });
-
   await stopEmbeddedServer();
-
-  process.env.PORT = String(previewPort);
-  process.env.HOST = '0.0.0.0';
-  process.env.SERVE_CLIENT = 'true';
-  process.env.APP_BASE_URL = lanUrl;
-  process.env.DATABASE_PATH = runtimePaths.databasePath;
-  process.env.CLIENT_DIST_PATH = clientDistPath;
 
   await appendLog(`Loading bundled server module from ${serverEntryPath}`);
   const serverModule = await loadServerModule();
-  await appendLog('Starting bundled server instance.');
-  serverHandle = await serverModule.startServer();
-  await appendLog(`Waiting for health at ${localUrl}/api/health`);
-  await waitForHealth(`${localUrl}/api/health`);
-  await appendLog('Embedded server is healthy.');
 
-  setStatus({
-    phase: 'ready',
-    message: 'Ready on this network.',
-    localUrl,
-    lanUrl,
-    dataPath: runtimePaths.dataPath,
-    logsPath: runtimePaths.logsPath,
-    error: null
-  });
-  await appendLog('Server is ready. Waiting for Start action.');
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    const { port: previewPort, usedFallback } = await resolveServerPort(defaultPort);
+    const localUrl = `http://127.0.0.1:${previewPort}`;
+    const lanUrl = getLanUrl(previewPort);
+    const readyMessage = usedFallback
+      ? `Ready on this network. Using port ${previewPort} because ${defaultPort} was busy.`
+      : 'Ready on this network.';
+
+    setStatus({
+      phase: 'starting',
+      message: usedFallback
+        ? `Starting the local classroom server on port ${previewPort} because ${defaultPort} was busy...`
+        : 'Starting the local classroom server...',
+      localUrl,
+      lanUrl,
+      dataPath: runtimePaths.dataPath,
+      logsPath: runtimePaths.logsPath,
+      error: null
+    });
+
+    process.env.PORT = String(previewPort);
+    process.env.HOST = '0.0.0.0';
+    process.env.SERVE_CLIENT = 'true';
+    process.env.APP_BASE_URL = lanUrl;
+    process.env.DATABASE_PATH = runtimePaths.databasePath;
+    process.env.CLIENT_DIST_PATH = clientDistPath;
+
+    try {
+      await appendLog(`Starting bundled server instance on port ${previewPort}.`);
+      serverHandle = await serverModule.startServer();
+      await appendLog(`Waiting for health at ${localUrl}/api/health`);
+      await waitForHealth(`${localUrl}/api/health`);
+      await appendLog('Embedded server is healthy.');
+
+      setStatus({
+        phase: 'ready',
+        message: readyMessage,
+        localUrl,
+        lanUrl,
+        dataPath: runtimePaths.dataPath,
+        logsPath: runtimePaths.logsPath,
+        error: null
+      });
+      await appendLog('Server is ready. Waiting for Start action.');
+      return;
+    } catch (error) {
+      if (!isAddressInUseError(error) || attempt === 2) {
+        throw error;
+      }
+
+      await appendLog(`Port ${previewPort} became unavailable before startup completed. Retrying with a new port.`);
+    }
+  }
 }
 
 async function restartEmbeddedServer() {

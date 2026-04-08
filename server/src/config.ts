@@ -37,28 +37,36 @@ function expandLoopbackOrigins(urlValue: string | null): string[] {
   }
 }
 
-const port = Number(process.env.PORT ?? 4000);
-const host = process.env.HOST?.trim() || '0.0.0.0';
-const serveClient = process.env.SERVE_CLIENT === 'true';
-const appBaseUrl = normalizeUrl(process.env.APP_BASE_URL);
-const clientUrl = normalizeUrl(process.env.CLIENT_URL) ?? 'http://localhost:5173';
-const publicAppUrl = appBaseUrl ?? (serveClient ? `http://localhost:${port}` : clientUrl);
-const allowedOrigins = [...new Set([...expandLoopbackOrigins(clientUrl), ...expandLoopbackOrigins(appBaseUrl)])];
-
 export const config = {
-  port,
-  host,
-  serveClient,
-  clientUrl,
-  appBaseUrl,
-  publicAppUrl,
-  allowedOrigins,
-  databasePath: process.env.DATABASE_PATH ?? './server/data/classroom-codenames.sqlite',
+  get port() {
+    return Number(process.env.PORT ?? 4000);
+  },
+  get host() {
+    return process.env.HOST?.trim() || '0.0.0.0';
+  },
+  get serveClient() {
+    return process.env.SERVE_CLIENT === 'true';
+  },
+  get appBaseUrl() {
+    return normalizeUrl(process.env.APP_BASE_URL);
+  },
+  get clientUrl() {
+    return normalizeUrl(process.env.CLIENT_URL) ?? 'http://localhost:5173';
+  },
+  get publicAppUrl() {
+    return this.appBaseUrl ?? (this.serveClient ? `http://localhost:${this.port}` : this.clientUrl);
+  },
+  get allowedOrigins() {
+    return [...new Set([...expandLoopbackOrigins(this.clientUrl), ...expandLoopbackOrigins(this.appBaseUrl)])];
+  },
+  get databasePath() {
+    return process.env.DATABASE_PATH ?? './server/data/classroom-codenames.sqlite';
+  },
   isOriginAllowed(origin?: string | null) {
     if (!origin) {
       return true;
     }
 
-    return allowedOrigins.includes(origin.replace(/\/+$/, ''));
+    return this.allowedOrigins.includes(origin.replace(/\/+$/, ''));
   }
 };
