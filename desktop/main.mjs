@@ -268,7 +268,10 @@ async function ensureRuntimePaths() {
 
 async function loadServerModule() {
   if (!cachedServerModulePromise) {
-    cachedServerModulePromise = import(pathToFileURL(serverEntryPath).href);
+    cachedServerModulePromise = import(pathToFileURL(serverEntryPath).href).catch((error) => {
+      cachedServerModulePromise = null;
+      throw error;
+    });
   }
 
   return cachedServerModulePromise;
@@ -288,9 +291,6 @@ async function startEmbeddedServer() {
   runtimePaths = await ensureRuntimePaths();
   await fs.writeFile(runtimePaths.pidFilePath, String(process.pid), 'utf8');
   await stopEmbeddedServer();
-
-  await appendLog(`Loading bundled server module from ${serverEntryPath}`);
-  const serverModule = await loadServerModule();
 
   for (let attempt = 0; attempt < 3; attempt += 1) {
     const { port: previewPort, usedFallback } = await resolveServerPort(defaultPort);
@@ -320,6 +320,8 @@ async function startEmbeddedServer() {
     process.env.CLIENT_DIST_PATH = clientDistPath;
 
     try {
+      await appendLog(`Loading bundled server module from ${serverEntryPath}`);
+      const serverModule = await loadServerModule();
       await appendLog(`Starting bundled server instance on port ${previewPort}.`);
       serverHandle = await serverModule.startServer();
       await appendLog(`Waiting for health at ${localUrl}/api/health`);

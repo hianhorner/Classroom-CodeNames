@@ -5,7 +5,7 @@ import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { config } from './config';
-import './db/database';
+import { getDb } from './db/database';
 import { createApiRouter } from './routes/api';
 import { createRealtimeLayer } from './socket/realtime';
 
@@ -50,6 +50,7 @@ function createExpressApp(clientDistPath: string) {
 }
 
 export async function startServer(): Promise<ClassroomServerHandle> {
+  getDb();
   const clientDistPath = resolveClientDistPath();
   const app = createExpressApp(clientDistPath);
   const server = createServer(app);
